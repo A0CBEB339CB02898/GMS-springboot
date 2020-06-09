@@ -1,4 +1,4 @@
-package com.entity;
+package com.gms.entity;
 
 /**
  * Created by Orion on 2020/6/9 13:21
