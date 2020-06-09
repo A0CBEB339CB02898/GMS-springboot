@@ -2,7 +2,7 @@ package com.entity;
 
 import java.util.Date;
 
-public class filed {
+public class field {
     private int placeId;
     private String placeName;
     private Date appointment;
