@@ -1,15 +1,13 @@
 package com.gms;
 
-import com.entity.trading;
-import com.gms.GmsApplication;
-import com.mapper.tradingMapper;
+import com.gms.entity.trading;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import static org.junit.Assert.*;
+import java.util.List;
 
 /**
  * Created by Orion on 2020/6/9 14:02
@@ -19,10 +17,14 @@ import static org.junit.Assert.*;
 public class tradingMapperTest {
 
     @Autowired
-    com.mapper.tradingMapper tradingMapper;
+    com.gms.mapper.tradingMapper tradingMapper;
+    private List<trading> trading;
+
 
     @Test
     public void getAllTrading() throws  Exception{
-        tradingMapper.getAllTrading().forEach(System.out::println);
+        trading = tradingMapper.getAllTrading();
+        System.out.println(trading.get(1).getUserID());
+        System.out.println(trading.get(1).getCounterParty());
     }
 }

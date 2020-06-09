@@ -1,7 +1,6 @@
-package com.mapper;
+package com.gms.mapper;
 
-import com.entity.trading;
-import org.apache.ibatis.annotations.Mapper;
+import com.gms.entity.trading;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
