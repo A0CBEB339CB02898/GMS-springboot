@@ -4,10 +4,11 @@ import com.gms.entity.field;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
+import java.lang.reflect.Field;
 import java.util.List;
 @Repository
 public interface fieldMapper {
    @Select("select * from Field")
-    List<field> getAllField();
+   List<field> getAllField();
 
 }
