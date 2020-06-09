@@ -11,7 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class fieldMapperTest {
     @Autowired
-    com.mapper.fieldMapper fieldMapper;
+    com.gms.mapper.fieldMapper fieldMapper;
 
     @Test
     public void getAllField() throws  Exception{

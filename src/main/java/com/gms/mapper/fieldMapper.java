@@ -1,6 +1,6 @@
-package com.mapper;
+package com.gms.mapper;
 
-import com.entity.field;
+import com.gms.entity.field;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
