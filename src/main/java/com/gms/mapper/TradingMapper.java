@@ -10,7 +10,7 @@ import java.util.List;
  * Created by Orion on 2020/6/9 13:24
  */
 @Repository
-public interface tradingMapper {
+public interface TradingMapper {
     @Select("select * from Trading")
     List<Trading> getAllTrading();
 }

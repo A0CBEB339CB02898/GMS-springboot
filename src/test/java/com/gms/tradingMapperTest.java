@@ -17,7 +17,7 @@ import java.util.List;
 public class tradingMapperTest {
 
     @Autowired
-    com.gms.mapper.tradingMapper tradingMapper;
+    com.gms.mapper.TradingMapper tradingMapper;
     private List<Trading> trading;
 
 
