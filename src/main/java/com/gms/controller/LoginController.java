@@ -12,7 +12,7 @@ import java.util.Map;
 @RestController
 public class LoginController {
     @Autowired
-    com.gms.mapper.userMapper userMapper;
+    com.gms.mapper.UserMapper userMapper;
     private List<User> users;
 
     @PostMapping("/login")
