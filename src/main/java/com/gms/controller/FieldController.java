@@ -11,7 +11,7 @@ import java.util.List;
  * Created by PASSERFBER on 2020/6/9 21:49
  */
 @RestController
-public class fieldController {
+public class FieldController {
     @Autowired
     com.gms.mapper.fieldMapper fieldMapper;
     List<field> fields ;
