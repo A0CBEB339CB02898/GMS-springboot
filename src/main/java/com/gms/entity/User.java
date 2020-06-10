@@ -7,6 +7,7 @@ public class User {
     private String username;
     private String password;
     private String phoneNum;
+    private String email;
     private int posId;
 
     public int getUserId() {
@@ -39,6 +40,14 @@ public class User {
 
     public void setPhoneNum(String phoneNum) {
         this.phoneNum = phoneNum;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public int getPosId() {

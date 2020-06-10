@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.gms.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.util.DigestUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,23 @@ public class LoginController {
             object.put("code", 200);
         } else {
             object.put("message", "失败");
+            object.put("code", 404);
+        }
+        return object;
+    }
+
+    @PostMapping("/register")
+    public JSONObject register(@RequestBody Map user){
+        JSONObject object = new JSONObject();
+
+        String md5Pass = DigestUtils.md5DigestAsHex(user.get("password").toString().getBytes());
+        System.out.println(user.get("username").toString());
+        String str = userMapper.register(user.get("username").toString(), md5Pass,user.get("phoneNum").toString(), 3, user.get("email").toString());
+        if(str==null){
+            object.put("message", "注册成功");
+            object.put("code", 200);
+        }else {
+            object.put("message", "注册失败");
             object.put("code", 404);
         }
         return object;
