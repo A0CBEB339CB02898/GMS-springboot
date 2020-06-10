@@ -8,9 +8,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class fieldMapperTest {
+public class FieldMapperTest {
     @Autowired
-    com.gms.mapper.fieldMapper fieldMapper;
+    com.gms.mapper.FieldMapper fieldMapper;
 
     @Test
     public void getAllField() throws  Exception{

@@ -1,6 +1,6 @@
 package com.gms.controller;
 
-import com.gms.entity.field;
+import com.gms.entity.Field;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,11 +13,11 @@ import java.util.List;
 @RestController
 public class FieldController {
     @Autowired
-    com.gms.mapper.fieldMapper fieldMapper;
-    List<field> fields ;
+    com.gms.mapper.FieldMapper fieldMapper;
+    List<Field> Fields;
     @GetMapping("/field")
-    public  List<field> fields() {
-        List<field> fieldList;
+    public  List<Field> fields() {
+        List<Field> fieldList;
         fieldList = fieldMapper.getAllField();
         return  fieldList;
     }

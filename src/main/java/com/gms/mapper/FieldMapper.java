@@ -1,14 +1,13 @@
 package com.gms.mapper;
 
-import com.gms.entity.field;
+import com.gms.entity.Field;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
-import java.lang.reflect.Field;
 import java.util.List;
 @Repository
-public interface fieldMapper {
+public interface FieldMapper {
    @Select("select * from Field")
-   List<field> getAllField();
+   List<Field> getAllField();
 
 }
