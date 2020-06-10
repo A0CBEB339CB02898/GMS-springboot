@@ -2,8 +2,6 @@ package com.gms.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.gms.entity.User;
-import com.gms.entity.trading;
-import com.gms.mapper.tradingMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

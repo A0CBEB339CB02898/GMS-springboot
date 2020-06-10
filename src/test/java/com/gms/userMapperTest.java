@@ -29,7 +29,6 @@ public class userMapperTest {
 package com.gms;
 
 import com.gms.entity.User;
-import com.gms.entity.trading;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

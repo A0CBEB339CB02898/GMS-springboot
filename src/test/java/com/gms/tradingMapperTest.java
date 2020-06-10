@@ -1,6 +1,6 @@
 package com.gms;
 
-import com.gms.entity.trading;
+import com.gms.entity.Trading;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ public class tradingMapperTest {
 
     @Autowired
     com.gms.mapper.tradingMapper tradingMapper;
-    private List<trading> trading;
+    private List<Trading> trading;
 
 
     @Test
