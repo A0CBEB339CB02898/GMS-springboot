@@ -1,7 +1,6 @@
 package com.gms;
 
 import com.gms.entity.Game;
-import com.gms.entity.trading;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,7 @@ import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class gameMapperTest {
+public class GameMapperTest {
 
     @Autowired
     com.gms.mapper.GameMapper gameMapper;
