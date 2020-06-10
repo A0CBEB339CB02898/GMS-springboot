@@ -10,7 +10,7 @@ public class Charge {
     private int startCharge;
     private int overCharge;
     private String light;
-    private Double cost;
+    private int cost;
 
     public int getIdCharge() {
         return idCharge;
@@ -60,11 +60,11 @@ public class Charge {
         this.light = light;
     }
 
-    public Double getCost() {
+    public int getCost() {
         return cost;
     }
 
-    public void setCost(Double cost) {
+    public void setCost(int cost) {
         this.cost = cost;
     }
 }
