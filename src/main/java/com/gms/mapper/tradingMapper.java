@@ -1,6 +1,6 @@
 package com.gms.mapper;
 
-import com.gms.entity.trading;
+import com.gms.entity.Trading;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
@@ -12,5 +12,5 @@ import java.util.List;
 @Repository
 public interface tradingMapper {
     @Select("select * from Trading")
-    List<trading> getAllTrading();
+    List<Trading> getAllTrading();
 }
