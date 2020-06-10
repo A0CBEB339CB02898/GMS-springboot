@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface gameMapper {
+public interface GameMapper {
     @Select("select * from Game")
     List<Game> getAllGame();
 }
