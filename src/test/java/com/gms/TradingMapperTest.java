@@ -22,9 +22,8 @@ public class TradingMapperTest {
 
 
     @Test
-    public void getAllTrading() throws  Exception{
-        trading = tradingMapper.getAllTrading();
-        System.out.println(trading.get(1).getUserID());
-        System.out.println(trading.get(1).getCounterParty());
+    public void test() throws  Exception{
+        double dou=Integer.parseInt("2.0");
+        System.out.println(dou);
     }
 }

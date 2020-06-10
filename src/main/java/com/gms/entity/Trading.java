@@ -4,27 +4,31 @@ package com.gms.entity;
  * Created by Orion on 2020/6/9 13:21
  */
 public class Trading {
-    private long tradingID;
-    private int userID;
+    private int tradingId;
+    private int userId;
     private int tradingType;
+    private long tradingTime;
     private String counterParty;
-    private double transactionAmount;
+    private int transactionAmount;
     private String tradingContent;
+    private int isDelete;
 
-    public long getTradingID() {
-        return tradingID;
+
+
+    public int getTradingId() {
+        return tradingId;
     }
 
-    public void setTradingID(long tradingID) {
-        this.tradingID = tradingID;
+    public void setTradingId(int tradingId) {
+        this.tradingId = tradingId;
     }
 
-    public int getUserID() {
-        return userID;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setUserID(int userID) {
-        this.userID = userID;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public int getTradingType() {
@@ -35,6 +39,14 @@ public class Trading {
         this.tradingType = tradingType;
     }
 
+    public long getTradingTime() {
+        return tradingTime;
+    }
+
+    public void setTradingTime(long tradingTime) {
+        this.tradingTime = tradingTime;
+    }
+
     public String getCounterParty() {
         return counterParty;
     }
@@ -43,11 +55,11 @@ public class Trading {
         this.counterParty = counterParty;
     }
 
-    public double getTransactionAmount() {
+    public int getTransactionAmount() {
         return transactionAmount;
     }
 
-    public void setTransactionAmount(double transactionAmount) {
+    public void setTransactionAmount(int transactionAmount) {
         this.transactionAmount = transactionAmount;
     }
 
@@ -57,5 +69,13 @@ public class Trading {
 
     public void setTradingContent(String tradingContent) {
         this.tradingContent = tradingContent;
+    }
+
+    public int isDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(int delete) {
+        isDelete = delete;
     }
 }
