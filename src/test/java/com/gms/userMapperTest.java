@@ -2,7 +2,6 @@
 package com.gms;
 
 import com.gms.entity.User;
-import com.gms.entity.trading;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,7 @@ import java.util.List;
 public class userMapperTest {
 
     @Autowired
-    com.gms.mapper.userMapper userMapper;
+    com.gms.mapper.UserMapper userMapper;
     private List<User> userList;
 
 
@@ -42,7 +41,7 @@ import java.util.List;
 public class userMapperTest {
 
     @Autowired
-    com.gms.mapper.userMapper userMapper;
+    com.gms.mapper.UserMapper userMapper;
     private List<User> userList;
 
 
