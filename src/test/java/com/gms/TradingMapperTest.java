@@ -14,7 +14,7 @@ import java.util.List;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class tradingMapperTest {
+public class TradingMapperTest {
 
     @Autowired
     com.gms.mapper.TradingMapper tradingMapper;

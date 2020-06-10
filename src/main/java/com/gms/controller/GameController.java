@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-public class gameController {
+public class GameController {
     @Autowired
     public gameMapper gameMapper;
     private List<Game> games;
