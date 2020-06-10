@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface userMapper {
-    @Select("select * from User")
-    List<User> getAllUser();
+public interface UserMapper {
+    @Select("select * from User where username=#{username} and password=#{password}")
+    List<User> login(String username, String password);
 }
