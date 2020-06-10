@@ -1,60 +1,61 @@
 package com.gms.entity;
 
-import java.util.Date;
-
 public class Equipment {
-    private int idEquipment;
-    private String nameEquipment;
-    private int costEquipment;
-    private String statusEquipment;
-    private String timeEquipment;
-    private String renterEquipment;
+    private String equipmentId;
+    private String equipmentName;
+    private int equipmentCost;
+    private String equipmentStatus;
 
-    public int getIdEquipment() {
-        return idEquipment;
+    public String getEquipmentId() {
+        return equipmentId;
     }
 
-    public void setIdEquipment(int idEquipment) {
-        this.idEquipment = idEquipment;
+    public void setEquipmentId(String equipmentId) {
+        this.equipmentId = equipmentId;
     }
 
-    public String getNameEquipment() {
-        return nameEquipment;
+    public String getEquipmentName() {
+        return equipmentName;
     }
 
-    public void setNameEquipment(String nameEquipment) {
-        this.nameEquipment = nameEquipment;
+    public void setEquipmentName(String equipmentName) {
+        this.equipmentName = equipmentName;
     }
 
-    public int getCostEquipment() {
-        return costEquipment;
+    public int getEquipmentCost() {
+        return equipmentCost;
     }
 
-    public void setCostEquipment(int costEquipment) {
-        this.costEquipment = costEquipment;
+    public void setEquipmentCost(int equipmentCost) {
+        this.equipmentCost = equipmentCost;
     }
 
-    public String getStatusEquipment() {
-        return statusEquipment;
+    public String getEquipmentStatus() {
+        return equipmentStatus;
     }
 
-    public void setStatusEquipment(String statusEquipment) {
-        this.statusEquipment = statusEquipment;
+    public void setEquipmentStatus(String equipmentStatus) {
+        this.equipmentStatus = equipmentStatus;
     }
 
-    public String getTimeEquipment() {
-        return timeEquipment;
+    public String getEquipmentTime() {
+        return equipmentTime;
     }
 
-    public void setTimeEquipment(String timeEquipment) {
-        this.timeEquipment = timeEquipment;
+    public void setEquipmentTime(String equipmentTime) {
+        this.equipmentTime = equipmentTime;
     }
 
-    public String getRenterEquipment() {
-        return renterEquipment;
+    public String getEquipmentRenter() {
+        return equipmentRenter;
     }
 
-    public void setRenterEquipment(String renterEquipment) {
-        this.renterEquipment = renterEquipment;
+    public void setEquipmentRenter(String equipmentRenter) {
+        this.equipmentRenter = equipmentRenter;
     }
+
+    private String equipmentTime;
+    private String equipmentRenter;
+
+
 }
