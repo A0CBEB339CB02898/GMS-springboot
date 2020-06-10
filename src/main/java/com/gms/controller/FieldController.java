@@ -16,9 +16,9 @@ public class FieldController {
     com.gms.mapper.FieldMapper fieldMapper;
     List<Field> Fields;
     @GetMapping("/field")
-    public  List<Field> fields() {
-        List<Field> fieldList;
-        fieldList = fieldMapper.getAllField();
-        return  fieldList;
+    public  List<Field> Fields() {
+
+        Fields = fieldMapper.getAllField();
+        return  Fields;
     }
 }
