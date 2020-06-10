@@ -1,7 +1,7 @@
 package com.gms.controller;
 
 import com.gms.entity.Trading;
-import com.gms.mapper.tradingMapper;
+import com.gms.mapper.TradingMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 public class TradingController {
     @Autowired
-    tradingMapper tradingMapper;
+    TradingMapper tradingMapper;
     private  List<Trading> Tradings;
 
     @GetMapping("/trading")
