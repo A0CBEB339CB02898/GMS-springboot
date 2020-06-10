@@ -1,7 +1,7 @@
 package com.gms.controller;
 
-import com.gms.entity.Equipment;
-import com.gms.mapper.EquipmentMapper;
+import com.gms.entity.equipment;
+import com.gms.mapper.equipmentMapper;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,8 +15,8 @@ import java.util.List;
 @RestController
 public class EquipmentController {
     @Autowired
-    EquipmentMapper equipmentMapper;
-    private  List<Equipment> equipments;
+    equipmentMapper equipmentMapper;
+    private  List<equipment> equipments;
 
     @GetMapping("/equipment")
     public String equipment(){
