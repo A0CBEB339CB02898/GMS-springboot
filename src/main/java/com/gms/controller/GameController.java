@@ -2,7 +2,7 @@ package com.gms.controller;
 
 import com.gms.entity.Game;
 
-import com.gms.mapper.gameMapper;
+import com.gms.mapper.GameMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-public class gameController {
+public class GameController {
     @Autowired
-    public gameMapper gameMapper;
+    public GameMapper gameMapper;
     private List<Game> games;
 
     @GetMapping("/game")

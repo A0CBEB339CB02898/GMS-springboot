@@ -2,7 +2,7 @@ package com.gms.entity;
 
 import java.util.Date;
 
-public class equipment {
+public class Equipment {
     private int idEquipment;
     private String nameEquipment;
     private int costEquipment;

@@ -10,7 +10,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class fieldMapperTest {
     @Autowired
-    com.gms.mapper.fieldMapper fieldMapper;
+    com.gms.mapper.FieldMapper fieldMapper;
 
     @Test
     public void getAllField() throws  Exception{

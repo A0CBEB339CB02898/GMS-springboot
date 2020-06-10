@@ -2,7 +2,7 @@ package com.gms.entity;
 
 import java.util.Date;
 
-public class field {
+public class Field {
     private int placeId;
     private String placeName;
     private Date appointment;

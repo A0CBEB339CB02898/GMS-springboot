@@ -15,7 +15,7 @@ import java.util.List;
 public class gameMapperTest {
 
     @Autowired
-    com.gms.mapper.gameMapper gameMapper;
+    com.gms.mapper.GameMapper gameMapper;
     private List<Game> games;
 
 
