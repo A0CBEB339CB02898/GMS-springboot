@@ -5,6 +5,8 @@ public class Equipment {
     private String equipmentName;
     private int equipmentCost;
     private String equipmentStatus;
+    private String equipmentTime;
+    private String equipmentRenter;
 
     public String getEquipmentId() {
         return equipmentId;
@@ -53,9 +55,5 @@ public class Equipment {
     public void setEquipmentRenter(String equipmentRenter) {
         this.equipmentRenter = equipmentRenter;
     }
-
-    private String equipmentTime;
-    private String equipmentRenter;
-
 
 }
