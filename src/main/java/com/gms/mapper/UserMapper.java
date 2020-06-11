@@ -17,7 +17,7 @@ public interface UserMapper {
     @Update("update User set password=#{password} where (username=#{username} and phoneNum=#{phoneNum}) or (username=#{username} and email=#{email})")
     int changePassword(@Param("password") String password, @Param("username") String username, @Param("phoneNum") String phoneNum, @Param("email") String email);
 
-    @Select("select userId,username,phoneNum,posId,email,state from User")
+    @Select("select * from User")
     List<User> getAllUser();
 
     @Update("update User set posId=#{posId} where userId=#{userId}")
@@ -26,7 +26,7 @@ public interface UserMapper {
     @Delete("delete from User where (userId=#{userId})")
     int deleteManager(int userId);
 
-    @Select("select userId,username,phoneNum,posId,email,state from User where username=#{username}")
+    @Select("select * from User where username=#{username}")
     List<User> queryManager(String username);
 
 }

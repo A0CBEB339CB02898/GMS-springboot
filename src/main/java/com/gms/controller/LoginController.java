@@ -29,6 +29,7 @@ public class LoginController {
             object.put("message", "失败");
             object.put("code", 404);
         }
+        object.put("user",userList.get(0));
         return object;
     }
 
