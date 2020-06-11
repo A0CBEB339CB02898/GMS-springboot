@@ -3,8 +3,8 @@ package com.gms.entity;
 public class GameEquipment {
     private int equipmentId;
     private int gameId;
-    private String status;
-    private int userId;
+    private String equipmentName;
+
 
     public int getEquipmentId() {
         return equipmentId;
@@ -22,19 +22,11 @@ public class GameEquipment {
         this.gameId = gameId;
     }
 
-    public String getStatus() {
-        return status;
+    public String getEquipmentName() {
+        return equipmentName;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setEquipmentName(String equipmentName) {
+        this.equipmentName = equipmentName;
     }
 }

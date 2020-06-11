@@ -6,9 +6,7 @@ public class Game {
     private int gameId;
     private String gameName;
     private String Event;
-    private Date holdingTime;
-    private int positionId;
-    private int EquipmentId;
+    private int holdingTime;
     private String sponsor;
     private int userId;
 
@@ -44,29 +42,14 @@ public class Game {
         Event = event;
     }
 
-    public Date getHoldingTime() {
+    public int getHoldingTime() {
         return holdingTime;
     }
 
-    public void setHoldingTime(Date holdingTime) {
+    public void setHoldingTime(int holdingTime) {
         this.holdingTime = holdingTime;
     }
 
-    public int getPositionId() {
-        return positionId;
-    }
-
-    public void setPositionId(int positionId) {
-        this.positionId = positionId;
-    }
-
-    public int getEquipmentId() {
-        return EquipmentId;
-    }
-
-    public void setEquipmentId(int equipmentId) {
-        EquipmentId = equipmentId;
-    }
 
     public String getSponsor() {
         return sponsor;

@@ -4,7 +4,6 @@ public class GamePosition {
     private int bookId;
     private int gameId;
     private String positionName;
-    private int userId;
 
     public int getBookId() {
         return bookId;
@@ -30,11 +29,5 @@ public class GamePosition {
         this.positionName = positionName;
     }
 
-    public int getUserId() {
-        return userId;
-    }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
 }
