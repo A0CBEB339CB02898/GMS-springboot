@@ -5,10 +5,10 @@ import java.util.Date;
 public class User {
     private int userId;
     private String username;
-    private String password;
     private String phoneNum;
     private String email;
     private int posId;
+    private int state;
 
     public int getUserId() {
         return userId;
@@ -24,14 +24,6 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getPhoneNum() {
@@ -56,5 +48,13 @@ public class User {
 
     public void setPosId(int posId) {
         this.posId = posId;
+    }
+
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
     }
 }

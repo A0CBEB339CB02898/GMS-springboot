@@ -20,7 +20,6 @@ public class UserMapperTest {
 
     @Test
     public void getAllUser() throws Exception {
-//        userList = userMapper.login("");
-//        System.out.println(userList.get(0).getUsername());
+//        System.out.println(userMapper.changePassword("12345","roo2", "111", "hgmkk2299@icloud.com"));
     }
 }

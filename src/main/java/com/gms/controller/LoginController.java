@@ -29,6 +29,7 @@ public class LoginController {
             object.put("message", "失败");
             object.put("code", 404);
         }
+        object.put("user",userList.get(0));
         return object;
     }
 
@@ -38,12 +39,30 @@ public class LoginController {
 
         String md5Pass = DigestUtils.md5DigestAsHex(user.get("password").toString().getBytes());
         System.out.println(user.get("username").toString());
-        String str = userMapper.register(user.get("username").toString(), md5Pass,user.get("phoneNum").toString(), 3, user.get("email").toString());
-        if(str==null){
+        int line = userMapper.register(user.get("username").toString(), md5Pass,user.get("phoneNum").toString(), 3, user.get("email").toString());
+        if(line>=1){
             object.put("message", "注册成功");
             object.put("code", 200);
         }else {
             object.put("message", "注册失败");
+            object.put("code", 404);
+        }
+        return object;
+    }
+
+    @PostMapping("/changePassword")
+    public JSONObject changePassword(@RequestBody Map user){
+        System.out.println(user.get("username"));
+        JSONObject object = new JSONObject();
+        String md5Pass = DigestUtils.md5DigestAsHex(user.get("password").toString().getBytes());
+        System.out.println(md5Pass);
+        int line = userMapper.changePassword(md5Pass, user.get("username").toString(), user.get("phoneNum").toString(), user.get("email").toString());
+        System.out.println(line);
+        if(line>=1){
+            object.put("message", "修改成功");
+            object.put("code", 200);
+        }else {
+            object.put("message", "信息有误");
             object.put("code", 404);
         }
         return object;
