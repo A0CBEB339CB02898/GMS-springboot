@@ -5,7 +5,7 @@ package com.gms.entity;
  */
 public class Charge {
     private int idCharge;
-    private int idPlace;
+    private String placeName;
     private String week;
     private int startCharge;
     private int overCharge;
@@ -20,12 +20,12 @@ public class Charge {
         this.idCharge = idCharge;
     }
 
-    public int getIdPlace() {
-        return idPlace;
+    public String getPlaceName() {
+        return placeName;
     }
 
-    public void setIdPlace(int idPlace) {
-        this.idPlace = idPlace;
+    public void setPlaceName(String placeName) {
+        this.placeName = placeName;
     }
 
     public String getWeek() {

@@ -7,6 +7,7 @@ public class Place {
     private int idPlace;
     private String placeName;
     private String location;
+    private int state;
 
     public int getIdPlace() {
         return idPlace;
@@ -30,5 +31,13 @@ public class Place {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
     }
 }
