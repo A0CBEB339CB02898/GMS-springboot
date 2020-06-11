@@ -10,6 +10,15 @@ public class Game {
     private int positionId;
     private int EquipmentId;
     private String sponsor;
+    private int userId;
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
 
     public int getGameId() {
         return gameId;
