@@ -1,11 +1,14 @@
 package com.gms.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.gms.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.util.DigestUtils;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -17,19 +20,21 @@ public class LoginController {
     private List<User> users;
 
     @PostMapping("/login")
-    public JSONObject login(@RequestBody Map user) {
+    public JSONObject login(@RequestBody Map user, HttpServletRequest request) {
         List<User> userList = new ArrayList<>();
         userList = userMapper.login(user.get("username").toString(), user.get("password").toString());
         JSONObject object = new JSONObject();
         System.out.println(userList);
         if (userList.size() != 0) {
+            HttpSession session = request.getSession();
+            session.setAttribute("user", userList.get(0));
             object.put("message", "登陆成功");
             object.put("code", 200);
+            object.put("user",userList.get(0));
         } else {
             object.put("message", "失败");
             object.put("code", 404);
         }
-        object.put("user",userList.get(0));
         return object;
     }
 
@@ -65,6 +70,37 @@ public class LoginController {
             object.put("message", "信息有误");
             object.put("code", 404);
         }
+        return object;
+    }
+
+    /**
+     * 获取session
+     */
+    @GetMapping("/getSession")
+    public JSONObject getSession(HttpServletRequest request){
+        JSONObject object = new JSONObject();
+        if(request.isRequestedSessionIdValid()){
+            object.put("message","获取session成功");
+            object.put("code", "200");
+        }else {
+            object.put("message", "获取session失败");
+            object.put("code", 404);
+        }
+        object.put("user", request.getSession().getAttribute("user"));
+        return object;
+    }
+
+    /**
+     * 注销登录
+     * @param session
+     * @return
+     */
+    @GetMapping("/logout")
+    public JSONObject logout(HttpSession session){
+        session.invalidate();//使Session变成无效，及用户退出
+        JSONObject object = new JSONObject();
+        object.put("message","注销成功");
+        object.put("code", "200");
         return object;
     }
 }
