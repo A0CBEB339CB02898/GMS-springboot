@@ -6,10 +6,7 @@ import com.gms.entity.Charge;
 import com.gms.entity.Place;
 import com.gms.mapper.PlaceMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -94,9 +91,7 @@ public class PlaceController {
             catch (Exception e){
                 response.put("msg",e);
                 response.put("code",400);
-
             }
-
         }
         return response;
      }
@@ -117,6 +112,51 @@ public class PlaceController {
         return object;
      }
 
+   @GetMapping("/place/searchappointment")
+    public  JSONObject getAppointment(){
+        List<Appointment>appointmentList;
+       appointmentList = placeMapper.getAppointment();
+        JSONObject object = new JSONObject();
+        if(appointmentList.size()!=0){
+            object.put("msg","请求成功");
+            object.put("code","200");
+
+        }else{
+            object.put("msg","请求失败");
+            object.put("code","404");
+        }
+        object.put("appointment",appointmentList);
+        return object;
+   }
+
+   @PostMapping("/place/addappointment")
+    public JSONObject appointmentAdd(@RequestBody Map body){
+        JSONObject response = new JSONObject();
+        Appointment appointment = new Appointment();
+        int usrId= Integer.parseInt(body.get("userId").toString());
+        Double startAppointment = (Double) body.get("startAppointment");
+        Double overAppointment = (Double) body.get("overAppointment");
+        String purpose = (String) body.get("purpose");
+        String placeName= (String) body.get("placeName");
+        String location = (String) body.get("location");
+       try{
+           appointment.setUserId(usrId);
+           appointment.setStartAppointment(startAppointment);
+           appointment.setOverAppointment(overAppointment);
+           appointment.setPurpose(purpose);
+           appointment.setPlaceName(placeName);
+           appointment.setLocation(location);
+           placeMapper.insertAppointment(appointment);
+
+           response.put("msg","suc");
+           response.put("code","200");
+       }
+       catch (Exception e){
+           response.put("msg",e);
+           response.put("code",400);
+       }
+       return response;
+   }
 
 }
 
