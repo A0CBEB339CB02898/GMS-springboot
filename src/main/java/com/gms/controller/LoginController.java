@@ -22,7 +22,8 @@ public class LoginController {
     @PostMapping("/login")
     public JSONObject login(@RequestBody Map user, HttpServletRequest request) {
         List<User> userList = new ArrayList<>();
-        userList = userMapper.login(user.get("username").toString(), user.get("password").toString());
+        String md5Pass = DigestUtils.md5DigestAsHex(user.get("password").toString().getBytes());
+        userList = userMapper.login(user.get("username").toString(), md5Pass);
         JSONObject object = new JSONObject();
         System.out.println(userList);
         if (userList.size() != 0) {
@@ -87,6 +88,7 @@ public class LoginController {
             object.put("code", 404);
         }
         object.put("user", request.getSession().getAttribute("user"));
+        object.put("routes", request.getSession().getAttribute("routes"));
         return object;
     }
 
@@ -105,17 +107,19 @@ public class LoginController {
     }
 
     @GetMapping("/getRoutes")
-    public JSONObject getRoutes(int posId){
+    public JSONObject getRoutes(int posId, HttpServletRequest request){
         JSONObject object = new JSONObject();
-        List<Route> routes = new ArrayList<>();
+        List<Route> children = new ArrayList<>();
         if(posId==1 || posId ==2){
-            routes = userMapper.getAllRoutes();
+            children = userMapper.getAllRoutes();
         }else {
-            routes = userMapper.getRoutes(3);
+            children = userMapper.getRoutes(3);
         }
+        HttpSession session = request.getSession();
         object.put("path","/dashboard");
         object.put("component", "Dashboard");
-        object.put("children", routes);
+        object.put("children", children);
+        session.setAttribute("routes", object);
         return object;
     }
 }
