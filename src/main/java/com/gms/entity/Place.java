@@ -7,7 +7,7 @@ public class Place {
     private int idPlace;
     private String placeName;
     private String location;
-    private int state;
+    private int isDelete;
 
     public int getIdPlace() {
         return idPlace;
@@ -33,11 +33,11 @@ public class Place {
         this.location = location;
     }
 
-    public int getState() {
-        return state;
+    public int getIsDelete() {
+        return isDelete;
     }
 
-    public void setState(int state) {
-        this.state = state;
+    public void setIsDelete(int isDelete) {
+        this.isDelete = isDelete;
     }
 }

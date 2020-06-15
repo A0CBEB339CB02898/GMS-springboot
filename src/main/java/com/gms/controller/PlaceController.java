@@ -19,11 +19,8 @@ import java.util.Map;
 public class PlaceController {
     @Autowired
     PlaceMapper placeMapper;
-    private List<Appointment> appointmentList;
-    private List<Place> placeList;
-    private List<Charge> chargeList;
 
-    @PostMapping("/place/addplace")
+    @PostMapping("/place/addPlace")
     public JSONObject placeAdd(@RequestBody Map body) {
         JSONObject response = new JSONObject();
         Place place = new Place();
@@ -53,7 +50,7 @@ public class PlaceController {
         return response;
     }
 
-     @GetMapping("/place/searchplace")
+     @GetMapping("/place/searchPlace")
     public  JSONObject getAllPlace(){
         List<Place> placeList;
         placeList = placeMapper.getAllPlace();
@@ -69,7 +66,7 @@ public class PlaceController {
         return object;
      }
 
-     @PostMapping("/place/deleteplace")
+     @PostMapping("/place/deletePlace")
     public  JSONObject placeDelete(@RequestBody Map body){
         JSONObject response = new JSONObject();
         Place place = new Place();
@@ -96,7 +93,7 @@ public class PlaceController {
         return response;
      }
 
-   @GetMapping("/place/searchcharge")
+   @GetMapping("/place/searchCharge")
     public JSONObject getAllCharge(){
         List<Charge> chargeList;
         chargeList= placeMapper.getAllCharge();
@@ -112,7 +109,7 @@ public class PlaceController {
         return object;
      }
 
-   @GetMapping("/place/searchappointment")
+   @GetMapping("/place/searchAppointment")
     public  JSONObject getAppointment(){
         List<Appointment>appointmentList;
        appointmentList = placeMapper.getAppointment();
@@ -129,23 +126,40 @@ public class PlaceController {
         return object;
    }
 
-   @PostMapping("/place/addappointment")
+   @GetMapping("/place/searchUserAppointment")
+    public JSONObject getUserAppointment(@RequestBody Map user ){
+        List<Appointment> userAppointmentList;
+        userAppointmentList = placeMapper.getUserAppointment(user.get("userId").toString());
+        JSONObject object = new JSONObject();
+        if(userAppointmentList.size()!=0){
+            object.put("msg","请求成功");
+            object.put("code","200");
+        }else{
+            object.put("msg","请求失败");
+            object.put("code","404");
+        }
+        object.put("userAppointmentList",userAppointmentList);
+        return object;
+}
+
+   @PostMapping("/place/addAppointment")
     public JSONObject appointmentAdd(@RequestBody Map body){
         JSONObject response = new JSONObject();
         Appointment appointment = new Appointment();
-        int usrId= Integer.parseInt(body.get("userId").toString());
-        Double startAppointment = (Double) body.get("startAppointment");
-        Double overAppointment = (Double) body.get("overAppointment");
+        int userId= Integer.parseInt(body.get("userId").toString());
+        int chargeId= Integer.parseInt(body.get("idCharge").toString());
+        int placeId = Integer.parseInt(body.get("idPlace").toString());
+        int startAppointment =  Integer.parseInt(body.get("startAppointment").toString());
+        int overAppointment =  Integer.parseInt(body.get("overAppointment").toString());
         String purpose = (String) body.get("purpose");
-        String placeName= (String) body.get("placeName");
-        String location = (String) body.get("location");
+
        try{
-           appointment.setUserId(usrId);
+           appointment.setIdPlace(placeId);
            appointment.setStartAppointment(startAppointment);
            appointment.setOverAppointment(overAppointment);
            appointment.setPurpose(purpose);
-           appointment.setPlaceName(placeName);
-           appointment.setLocation(location);
+           appointment.setUserId(userId);
+           appointment.setIdCharge(chargeId);
            placeMapper.insertAppointment(appointment);
 
            response.put("msg","suc");
@@ -158,5 +172,60 @@ public class PlaceController {
        return response;
    }
 
+   @PostMapping("/place/deleteAppointment")
+    public JSONObject deleteAppointment(@RequestBody Map body ){
+        JSONObject response = new JSONObject();
+        Appointment appointmentDelete=new Appointment();
+        if (body.get("idAppointment")==null){
+            response.put("msc","fail! "+" 参数缺失，请检查！");
+            response.put("code","400");
+            return response;
+        }else{
+            int idAppointment = Integer.parseInt(body.get("idAppointment").toString());
+            try{
+                appointmentDelete.setIdAppointment(idAppointment);
+                placeMapper.updateAppointment(appointmentDelete);
+
+                response.put("msg","suc");
+                response.put("code","200");
+            }
+            catch (Exception e){
+                response.put("msg",e);
+                response.put("code",400);
+            }
+        }
+               return  response;
+   }
+
+   @PostMapping("/place/changeAppointment")
+    public JSONObject changeAppointment(@RequestBody Map body){
+        JSONObject  response = new JSONObject();
+        Appointment appointment = new Appointment();
+        int idAppointment = Integer.parseInt(body.get("idAppointment").toString());
+        int idPlace = Integer.parseInt(body.get("idPlace").toString());
+        int startAppointment = Integer.parseInt(body.get("startAppointment").toString());
+        int overAppointment = Integer.parseInt(body.get("overAppointment").toString());
+        int userId=Integer.parseInt(body.get("userId").toString());
+        String purpose = (String) body.get("purpose");
+        int idCharge = Integer.parseInt(body.get("idCharge").toString());
+
+    try{
+        appointment.setIdAppointment(idAppointment);
+        appointment.setIdPlace(idPlace);
+        appointment.setStartAppointment(startAppointment);
+        appointment.setOverAppointment(overAppointment);
+        appointment.setUserId(userId);
+        appointment.setPurpose(purpose);
+        appointment.setIdCharge(idCharge);
+        placeMapper.changeAppointment(appointment);
+
+        response.put("msg","suc");
+        response.put("code","200");
+    }catch (Exception e){
+        response.put("msg",e);
+        response.put("code",400);
+    }
+    return response;
+   }
 }
 
