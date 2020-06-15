@@ -92,11 +92,12 @@ public class EquipmentController {
         return response;
     }
 
-//    @GetMapping("/equipment/search")
-//    public String equipmentSearch(@RequestBody Map body){
-//        JSONObject response = new JSONObject();
+    @GetMapping("/equipment/search2")
+    public JSONObject equipmentSearch2(){
+        JSONObject response = new JSONObject();
 //        Equipment equipment = new Equipment();
-//
+        List<Equipment> equipmentList = new ArrayList<>();
+        equipmentList = equipmentMapper.getAllEquipment();
 //        String str = null;
 //        String strAll = "";
 //        int i;
@@ -112,37 +113,20 @@ public class EquipmentController {
 //            strAll += str + "\n";
 //        }
 //        return strAll;
-//            String equipmentId = (String)body.get("equipmentId");
-//            String equipmentName = (String)body.get("equipmentName");
-//            int equipmentCost = Integer.parseInt(body.get("equipmentCost").toString());
-//            String equipmentStatus = (String)body.get("equipmentId");
-//            String equipmentTime = (String)body.get("equipmentName");
-//            String equipmentRenter = (String)body.get("equipmentId");
-//
-//            try{
-//                equipment.setEquipmentId(equipmentId);
-//                equipment.setEquipmentName(equipmentName);
-//                equipment.setEquipmentCost(equipmentCost);
-//                equipment.setEquipmentStatus(equipmentStatus);
-//                equipment.setEquipmentTime(equipmentTime);
-//                equipment.setEquipmentRenter(equipmentRenter);
-//
-//                equipmentMapper.searchAllEquipment(equipment);
-//
-//                response.put("msg","suc");
-//                response.put("code",200);
-//
-//            }
-//            catch (Exception e){
-//                response.put("msg",e);
-//                response.put("code",400);
-//            }
-//
-//
-//        return response;
-//
-//
-//    }
+        if(equipmentList.size()!=0){
+            response.put("message", "请求成功");
+            response.put("code", 200);
+        }else {
+            response.put("message", "失败");
+            response.put("code", 404);
+        }
+        response.put("equipments",equipmentList);
+
+
+        return response;
+
+
+    }
 
     @PostMapping("/equipment/search")
     public JSONObject equipmentSearch(@RequestBody Map body){
@@ -219,6 +203,7 @@ public class EquipmentController {
 
             try{
                 System.out.println(searchSql);
+
                 equipmentList = equipmentMapper.searchEquipment(searchSql);
 
                 response.put("msg","suc");
@@ -282,10 +267,12 @@ public class EquipmentController {
         else{
             String equipmentId = (String)body.get("equipmentId");
             int equipmentRenterId = Integer.parseInt(body.get("equipmentRenterId").toString());
+            long equipmentTime = System.currentTimeMillis();
 
             try{
                 equipment.setEquipmentId(equipmentId);
                 equipment.setEquipmentRenterId(equipmentRenterId);
+                equipment.setEquipmentTime(equipmentTime);
 
                 equipmentMapper.rentEquipment(equipment);
 
