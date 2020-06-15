@@ -1,11 +1,8 @@
 package com.gms.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.gms.entity.Equipment;
-import com.gms.entity.Game;
+import com.gms.entity.*;
 
-import com.gms.entity.GameEquipment;
-import com.gms.entity.GamePosition;
 import com.gms.mapper.GameMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -83,7 +81,7 @@ public class GameController {
                 game.setSponsor(sponsor);
                 game.setUserId(userId);
 
-                gameMapper.insertGame(game);
+                gameMapper.InsertGame(game);
 
                 response.put("msg","suc");
                 response.put("code",200);
@@ -95,6 +93,56 @@ public class GameController {
             }
         }
 
+        return response;
+    }
+
+    @PostMapping("/game/delete")
+    public JSONObject GameDelete(@RequestBody Map body){
+        JSONObject response = new JSONObject();
+        Game game = new Game();
+
+        if(body.get("gameId")==null){
+            response.put("msc","fail! "+" 参数缺失，请检查！");
+            response.put("code","400");
+            return response;
+        }
+        else{
+            int gameId = Integer.parseInt(body.get("gameId").toString());
+
+
+            try{
+                game.setGameId(gameId);
+
+                gameMapper.DeleteGame(game);
+
+                response.put("msg","suc");
+                response.put("code",200);
+
+            }
+            catch (Exception e){
+                response.put("msg",e);
+                response.put("code",400);
+            }
+        }
+
+        return response;
+    }
+    //暂时无效
+    @GetMapping("/game/search")
+    public JSONObject GameSearchByName(String gameName){
+        JSONObject response = new JSONObject();
+        System.out.println("gameName:"+gameName);
+        List<Game> games = new ArrayList<>();
+        games = gameMapper.SearchGameByName();
+        System.out.println("games:"+games);
+        if(games.size()!=0){
+            response.put("message", "查询成功");
+            response.put("code", 200);
+        } else {
+            response.put("message", "未找到结果");
+            response.put("code", 404);
+        }
+        response.put("games",games);
         return response;
     }
 }
