@@ -1,7 +1,7 @@
 package com.gms.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.fasterxml.jackson.annotation.JsonAlias;
+import com.gms.entity.Route;
 import com.gms.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -101,6 +101,21 @@ public class LoginController {
         JSONObject object = new JSONObject();
         object.put("message","注销成功");
         object.put("code", "200");
+        return object;
+    }
+
+    @GetMapping("/getRoutes")
+    public JSONObject getRoutes(int posId){
+        JSONObject object = new JSONObject();
+        List<Route> routes = new ArrayList<>();
+        if(posId==1 || posId ==2){
+            routes = userMapper.getAllRoutes();
+        }else {
+            routes = userMapper.getRoutes(3);
+        }
+        object.put("path","/dashboard");
+        object.put("component", "Dashboard");
+        object.put("children", routes);
         return object;
     }
 }

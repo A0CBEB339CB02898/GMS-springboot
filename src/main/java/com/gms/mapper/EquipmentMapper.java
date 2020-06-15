@@ -27,7 +27,7 @@ public interface EquipmentMapper {
     @Delete("delete from Equipment where equipmentId = #{equipmentId}")
     public int deleteEquipment(Equipment equipment);
 
-    @Update("update Equipment set equipmentStatus = 'rent',equipmentRenterId = #{equipmentRenterId} " +
+    @Update("update Equipment set equipmentStatus = 'rent',equipmentRenterId = #{equipmentRenterId},equipmentTime = #{equipmentTime} " +
             "where equipmentId = #{equipmentId}")
     public int rentEquipment(Equipment equipment);
 

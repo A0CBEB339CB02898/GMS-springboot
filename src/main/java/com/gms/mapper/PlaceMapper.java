@@ -15,27 +15,43 @@ import java.util.List;
  */
 @Repository
 public interface PlaceMapper {
-    @Select("select * from Appointment")
-    List<Appointment> getAllAppointment();
 
+    //查询收费标准
     @Select("select * from Charge")
     List<Charge> getAllCharge();
 
-    @Select("select idPlace,placeName,location from Place where state = '1' ")
+    //查询场地信息
+    @Select("select idPlace,placeName,location from Place where isDelete = '0' ")
     List<Place> getAllPlace();
 
+    //添加场地
+    @Insert("insert into Place(placeName,location) values(#{placeName},#{location}) ON DUPLICATE KEY UPDATE placeName = #{placeName},location=#{location},idDelete=0")
+    int insertPlace(Place placeAdd);
+
+    //删除场地
+    @Update("update Place  set isDelete=1 where idPlace=#{idPlace} ")
+     int updatePlace(Place placeDelete);
+
+    //查找预约
     @Select("SELECT  Place.placeName,Place.location, Appointment.startAppointment,Appointment.overAppointment,Appointment.purpose,  User.username,Charge.cost \n" +
             "FROM GMSdb.Place,GMSdb.Appointment,GMSdb.User,GMSdb.Charge \n" +
-            "WHERE Appointment.idPlace = Place.idPlace and Appointment.userId= User.userId and Appointment.idCharge=Charge.idCharge;")
+            "WHERE Appointment.idPlace = Place.idPlace and Appointment.userId= User.userId and Appointment.idCharge=Charge.idCharge and Appointment.isDelete='0';")
     List<Appointment> getAppointment();
 
-    @Insert("insert into Place(placeName,location) values(#{placeName},#{location}) ON DUPLICATE KEY UPDATE placeName = #{placeName},location=#{location},state=1")
-    int insertPlace(Place placeInsert);
+    //增加预约
+    @Insert("insert into Appointment(idPlace,startAppointment,overAppointment,purpose,userId,idCharge) values (#{idPlace},#{startAppointment},#{overAppointment},#{purpose},#{userId},#{idCharge})ON DUPLICATE KEY UPDATE idPlace=#{idPlace},startAppointment=#{startAppointment},overAppointment=#{overAppointment},userId=#{userId},idCharge=#{idCharge},isDelete=0")
+    int insertAppointment(Appointment appointmentAdd);
 
+    //按照用户名查询
+    @Select("select Appointment.idAppointment,Place.placeName,Place.location,Appointment.startAppointment,Appointment.overAppointment,Appointment.purpose, User.username,Charge.cost  FROM GMSdb.Place,GMSdb.Appointment,GMSdb.User,GMSdb.Charge  WHERE Appointment.idPlace = Place.idPlace and Appointment.idCharge=Charge.idCharge and Appointment.userId=#{userId} and Appointment.userId = User.userId ")
+    List<Appointment> getUserAppointment(String userId);
 
-    @Update("update Place  set state=0 where idPlace=#{idPlace} ")
-     int updatePlace(Place placeUpdate);
+    //预约退订
+     @Update("update Appointment set isDelete= '1' where idAppointment=#{idAppointment}")
+    int updateAppointment(Appointment appointmentCancel);
 
-    @Insert("insert into Appointment(startAppointment,overAppointment,purpose,userId) values (#{starAppointment},#{overAppointment},#{purpose},#{userId})" + "insert into Appointment(idPlace) from Place where placeName=#{placeName},location=#{location}")
-    int insertAppointment(Appointment appointmentInsert);
+     //预约修改
+
+    @Update("update Appointment set idPlace=#{idPlace},startAppointment=#{startAppointment},overAppointment=#{overAppointment},userId=#{userId},purpose=#{purpose},idCharge=#{idCharge} where idAppointment=#{idAppointment}")
+    int changeAppointment(Appointment appointmentChange);
 }

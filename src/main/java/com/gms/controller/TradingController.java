@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.gms.entity.Trading;
 import com.gms.entity.User;
 import com.gms.mapper.TradingMapper;
-import com.sun.xml.internal.bind.v2.TODO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,8 +21,8 @@ public class TradingController {
 
     /**
      * 新增交易
-     * @param body
-     * @return
+     * @param body 请求体
+     * @return json
      */
     @PostMapping("/trading/add")
     public JSONObject tradingAdd(@RequestBody Map body){
@@ -84,9 +83,9 @@ public class TradingController {
     /**
      * 删除交易 传入格式{"tradingId":#{tradingId}}
      * 会自动从session中获取当前操作的用户
-     * @param body
-     * @param session
-     * @return
+     * @param body 请求体
+     * @param session 会话
+     * @return json
      */
     @PostMapping("/trading/delete")
     public JSONObject tradingDelete(@RequestBody Map body,HttpSession session){
@@ -115,33 +114,120 @@ public class TradingController {
         return response;
     }
 
+
+    // TODO: 2020/6/15
+    //  根据tradingID查订单所有内容
+    //  根据日期查询订单
+    //  根据用户ID查询订单
+    //  根据支出or收入查询订单
+    /**
+     * 动态查询 value=-1即不作限制
+     * @param tradingId 交易Id
+     * @param tradingTime 交易事件
+     * @param userId 用户Id
+     * @param tradingType 交易类型
+     * @param count 查询的页数
+     * @return json 查询结果
+     */
+    @GetMapping("/trading/search")
+    public JSONObject tradingSearch(int tradingId,int userId,int tradingType,long tradingTime,int count){
+        JSONObject jsonObject=new JSONObject();
+        Trading trading=new Trading();
+
+        trading.setTradingId(tradingId);
+        trading.setTradingTime(tradingTime);
+        trading.setUserId(userId);
+        trading.setTradingType(tradingType);
+
+        List<Trading> listTradingIdSearch=null;
+        List<Trading> listTimeSearch=null;
+        List<Trading> listUserIdSearch=null;
+        List<Trading> listTypeSearch=null;
+
+        //根据tradingId查询
+        if (tradingId!=-1){
+            Trading trading1=new Trading();
+            try{
+                trading1=tradingMapper.getTradingByID(trading);
+                System.out.println(trading1.getTradingId());
+                listTradingIdSearch.add(trading1);
+                System.out.println(listTradingIdSearch.get(0).getTradingId());
+            }catch (Exception e){
+                jsonObject.put("tradingIdMsg",e);
+                jsonObject.put("code",400);
+            }
+        }
+
+        //根据userId查询
+        if (userId!=-1){
+            try{
+                listUserIdSearch= tradingMapper.getTradingByUserId(trading);
+            }catch (Exception e){
+                jsonObject.put("userIdMsg",e);
+                jsonObject.put("code",400);
+            }
+        }
+
+        //根据tradingType查询
+        if (tradingType!=-1){
+            try{
+                listTypeSearch= tradingMapper.getTradingByTradingType(trading);
+            }catch (Exception e){
+                jsonObject.put("tradingTypeMsg",e);
+                jsonObject.put("code",400);
+            }
+        }
+
+//        System.out.println("tradingID查询"+listTradingIdSearch.get(0).getTradingId());
+//        for (int i=0;i<listUserIdSearch.size();i++){
+//            System.out.println("userID查询"+listUserIdSearch.get(i).getTradingId());
+//        }
+//        for (int i=0;i<listTypeSearch.size();i++){
+//            System.out.println("type查询"+listTypeSearch.get(i).getTradingId());
+//        }
+
+
+        return jsonObject;
+    }
+
+
+
+    // TODO: 2020/6/15
+    //  计算总支出and收入
+
+    // TODO: 2020/6/15
+    //  修改交易内容 需要鉴权
+
+
+
     /**
      * 测试接口
-     * @param body
-     * @return
+     * @param k 测试参数
+     * @return v 测试参数
      */
     @GetMapping("/trading/test")
-     public String  tradingTest(@RequestBody Map body){
+    public String  tradingTest(String k,String v){
 //        System.out.println(isRightUser(Integer.parseInt(body.get("tradingId").toString()),Integer.parseInt(body.get("userId").toString()),Integer.parseInt(body.get("posId").toString())));
+//        User user=(User)session.getAttribute("user");
+//        System.out.println(user.getUsername());
+        System.out.println("k==="+k);
+        System.out.println("v==="+v);
         return "{ 'habi':'habi'}";
     }
 
-    // TODO: 2020/6/15 根据tradingID查订单所有内容
-    //   根据日期查询订单
-    //  根据用户ID查询订单
-    //  根据支出or收入查询订单
-    //  计算总支出and收入
 
 
-    // TODO: 2020/6/15 职位表未完善，到时候再优化鉴权。
-    /**
-     * 鉴权开始
+    // TODO: 2020/6/15
+    //  职位表未完善，到时候再优化鉴权。
+
+    /*
+      鉴权开始
      */
     /**
      * 鉴权 需要传入要鉴定的用户的userId和posId
-     * @param tradingId
-     * @param userId
-     * @param posId
+     * @param tradingId 需要鉴权的订单
+     * @param userId 需要鉴权的用户
+     * @param posId 用户的职位id
      * @return bool 是否有权限
      */
     public boolean isRightUser(int tradingId, int userId, int posId){
@@ -184,7 +270,7 @@ public class TradingController {
 
         return isRightUser;
     }
-    /**
-     * 鉴权结束
+    /*
+      鉴权结束
      */
 }

@@ -1,5 +1,6 @@
 package com.gms.mapper;
 
+import com.gms.entity.Route;
 import com.gms.entity.User;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
@@ -29,4 +30,9 @@ public interface UserMapper {
     @Select("select * from User where username=#{username} or posId=2")
     List<User> queryManager(String username);
 
+    @Select("select * from Routes where posId=#{posId}")
+    List<Route> getRoutes(int posId);
+
+    @Select("select * from Routes")
+    List<Route> getAllRoutes();
 }

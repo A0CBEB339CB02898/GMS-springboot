@@ -7,8 +7,8 @@ package com.gms.entity;
 public class Appointment {
     private int idAppointment;
     private int idPlace;
-    private Double startAppointment;
-    private Double overAppointment;
+    private int startAppointment;
+    private int  overAppointment;
     private int userId;
     private String purpose;
     private int idCharge;
@@ -16,20 +16,29 @@ public class Appointment {
     private String location;
     private String userName;
     private int cost;
+    private int idDelete;
 
-    public Double getStartAppointment() {
+    public int getIdDelete() {
+        return idDelete;
+    }
+
+    public void setIdDelete(int idDelete) {
+        this.idDelete = idDelete;
+    }
+
+    public int getStartAppointment() {
         return startAppointment;
     }
 
-    public void setStartAppointment(Double startAppointment) {
+    public void setStartAppointment(int startAppointment) {
         this.startAppointment = startAppointment;
     }
 
-    public Double getOverAppointment() {
+    public int getOverAppointment() {
         return overAppointment;
     }
 
-    public void setOverAppointment(Double overAppointment) {
+    public void setOverAppointment(int overAppointment) {
         this.overAppointment = overAppointment;
     }
 
