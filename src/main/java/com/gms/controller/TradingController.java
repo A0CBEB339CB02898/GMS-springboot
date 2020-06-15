@@ -2,10 +2,14 @@ package com.gms.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.gms.entity.Trading;
+import com.gms.entity.User;
 import com.gms.mapper.TradingMapper;
+import com.sun.xml.internal.bind.v2.TODO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,6 +20,11 @@ public class TradingController {
     @Autowired
     TradingMapper tradingMapper;
 
+    /**
+     * 新增交易
+     * @param body
+     * @return
+     */
     @PostMapping("/trading/add")
     public JSONObject tradingAdd(@RequestBody Map body){
         /**
@@ -72,17 +81,110 @@ public class TradingController {
         return response;
     }
 
+    /**
+     * 删除交易 传入格式{"tradingId":#{tradingId}}
+     * 会自动从session中获取当前操作的用户
+     * @param body
+     * @param session
+     * @return
+     */
+    @PostMapping("/trading/delete")
+    public JSONObject tradingDelete(@RequestBody Map body,HttpSession session){
+        JSONObject response = new JSONObject();
+        Trading trading = new Trading();
+        User user = (User) session.getAttribute("user");
+
+        if (isRightUser(Integer.parseInt(body.get("tradingId").toString()),user.getUserId(),user.getPosId())){
+            try{
+                //传入tradingId
+                trading.setTradingId(Integer.parseInt(body.get("tradingId").toString()));
+                tradingMapper.deleteTrading(trading.getTradingId());
+
+                response.put("msg","删除成功");
+                response.put("code",200);
+            }catch (Exception e){
+                response.put("msg","fail"+e);
+                response.put("code",400);
+            }
+        }
+        else {
+            response.put("msg","权限不足");
+            response.put("code","400");
+        }
+
+        return response;
+    }
 
     /**
-     * 获取所有tradingId值对比算出自增tradingId
+     * 测试接口
+     * @param body
+     * @return
      */
-//    @GetMapping("/tradingId")
-//    public List<Integer>  tradingID(){
-////        JSONObject response = new JSONObject();
-//        List<Integer> tradingIDs;
-//        tradingIDs=tradingMapper.getAllTradingID();
-//        return tradingIDs;
-//    }
+    @GetMapping("/trading/test")
+     public String  tradingTest(@RequestBody Map body){
+//        System.out.println(isRightUser(Integer.parseInt(body.get("tradingId").toString()),Integer.parseInt(body.get("userId").toString()),Integer.parseInt(body.get("posId").toString())));
+        return "{ 'habi':'habi'}";
+    }
+
+    // TODO: 2020/6/15 根据tradingID查订单所有内容
+    //   根据日期查询订单
+    //  根据用户ID查询订单
+    //  根据支出or收入查询订单
+    //  计算总支出and收入
 
 
+    // TODO: 2020/6/15 职位表未完善，到时候再优化鉴权。
+    /**
+     * 鉴权开始
+     */
+    /**
+     * 鉴权 需要传入要鉴定的用户的userId和posId
+     * @param tradingId
+     * @param userId
+     * @param posId
+     * @return bool 是否有权限
+     */
+    public boolean isRightUser(int tradingId, int userId, int posId){
+        boolean isRightUser=false;
+        Trading trading = new Trading();
+        trading.setTradingId(tradingId);
+
+        Trading trading_result=new Trading();
+        //查询传入的交易
+        try{
+            trading_result=tradingMapper.getTradingByID(trading);
+        }catch (Exception e){
+            System.out.println("鉴权失败！detail==="+e);
+        }
+
+        if (trading_result!=null){
+            //鉴定权限
+            if(posId==2){
+                //鉴定本人
+                if (trading_result.getUserId()==userId){
+                    isRightUser=true;
+                }
+                else{
+                    System.out.println("非创建者");
+                    isRightUser=false;
+                }
+            }
+            else if(posId==1){
+                System.out.println("超级管理员");
+                isRightUser=true;
+            }
+            else {
+                isRightUser=false;
+            }
+        }
+        else {
+            isRightUser=false;
+            System.out.println("鉴权失败！detail==="+"查询不到该交易");
+        }
+
+        return isRightUser;
+    }
+    /**
+     * 鉴权结束
+     */
 }

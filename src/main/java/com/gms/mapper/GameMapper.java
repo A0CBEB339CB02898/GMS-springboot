@@ -1,11 +1,11 @@
 package com.gms.mapper;
 
+import com.gms.entity.Equipment;
 import com.gms.entity.Game;
 import com.gms.entity.GameEquipment;
 import com.gms.entity.GamePosition;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -23,12 +23,5 @@ public interface GameMapper {
 
     @Insert("insert into Game(GameId,GameName,Event,HoldingTime,Sponsor,UserId)" +
             "values(#{gameId},#{gameName},#{event},#{holdingTime},#{sponsor},#{userId})")
-    int InsertGame(Game game);
-
-    @Update("update Game set IsDeleted = '0' where GameId = #{gameId}")
-    int DeleteGame(Game game);
-
-    @Select("select * from Game where GameName = #{gameName}")
-    List<Game> SearchGameByName();
-
+    public int insertGame(Game game);
 }

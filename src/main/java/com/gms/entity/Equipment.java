@@ -5,7 +5,7 @@ public class Equipment {
     private String equipmentName;
     private int equipmentCost;
     private String equipmentStatus;
-    private String equipmentTime;
+    private int equipmentTime;
     private int equipmentRenterId;
 
     public String getEquipmentId() {
@@ -40,11 +40,11 @@ public class Equipment {
         this.equipmentStatus = equipmentStatus;
     }
 
-    public String getEquipmentTime() {
+    public int getEquipmentTime() {
         return equipmentTime;
     }
 
-    public void setEquipmentTime(String equipmentTime) {
+    public void setEquipmentTime(int equipmentTime) {
         this.equipmentTime = equipmentTime;
     }
 

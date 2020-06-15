@@ -23,10 +23,10 @@ public interface UserMapper {
     @Update("update User set posId=#{posId} where userId=#{userId}")
     int addManager(int posId, int userId);
 
-    @Delete("delete from User where (userId=#{userId})")
+    @Update("update User set state=0 where userId=#{userId}")
     int deleteManager(int userId);
 
-    @Select("select * from User where username=#{username}")
+    @Select("select * from User where username=#{username} or posId=2")
     List<User> queryManager(String username);
 
 }

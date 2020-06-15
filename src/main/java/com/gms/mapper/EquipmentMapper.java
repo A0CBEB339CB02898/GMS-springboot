@@ -21,12 +21,8 @@ public interface EquipmentMapper {
             "where equipmentId = #{equipmentId}")
     public int repairEquipment(Equipment equipment);
 
-    @Select("select * from Equipment")
-    public int searchAllEquipment(Equipment equipment);
-
-    @Select("select * from Equipment" +
-            "where equipmentId = #{equipmentId},equipment = ")
-    public int searchEquipment(Equipment equipment);
+    @Select("select * from Equipment where #{searchSql}")
+    List<Equipment> searchEquipment(String searchSql);
 
     @Delete("delete from Equipment where equipmentId = #{equipmentId}")
     public int deleteEquipment(Equipment equipment);
