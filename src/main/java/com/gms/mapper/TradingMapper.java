@@ -16,17 +16,30 @@ public interface TradingMapper {
     //搜索所有交易
     @Select("select * from Trading")
     List<Trading> getAllTrading();
-    //搜索所有交易
-    @Select("select tradingId from Trading")
-    List<Integer> getAllTradingID();
 
     //搜索所有未删除的交易
     @Select("select * from Trading where isDelete=0")
     List<Trading> getAllTradingNotDelete();
 
-    //根据订单号搜索订单
+    //搜索所有已删除的交易
+    @Select("select * from Trading where isDelete=1")
+    List<Trading> getAllTradingDeleted();
+
+    //根据订单号搜索交易
     @Select("select * from Trading where tradingId=#{tradingId}")
     Trading getTradingByID(Trading trading);
+
+    //根据用户ID搜索交易
+    @Select("select * from Trading where userId=#{userId}")
+    List<Trading> getTradingByUserId(Trading trading);
+
+    //根据交易类型搜索交易
+    @Select("select * from Trading where tradingType=#{tradingType}")
+    List<Trading> getTradingByTradingType(Trading trading);
+
+    //根据交易事件搜索交易
+    @Select("select * from Trading where tradingTime=#{tradingTime}")
+    List<Trading> getTradingByTradingTime(Trading trading);
 
     //新增一条交易
     @Insert("insert into Trading(tradingId,userId,tradingType,tradingTime,counterParty,transactionAmount,tradingContent,isDelete) " +
