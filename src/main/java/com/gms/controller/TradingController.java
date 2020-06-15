@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.gms.entity.Trading;
 import com.gms.entity.User;
 import com.gms.mapper.TradingMapper;
+import com.sun.xml.internal.bind.v2.TODO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -81,7 +82,7 @@ public class TradingController {
     }
 
     /**
-     * 删除 传入格式{"tradingId":#{tradingId}}
+     * 删除交易 传入格式{"tradingId":#{tradingId}}
      * 会自动从session中获取当前操作的用户
      * @param body
      * @param session
@@ -114,14 +115,25 @@ public class TradingController {
         return response;
     }
 
-
+    /**
+     * 测试接口
+     * @param body
+     * @return
+     */
     @GetMapping("/trading/test")
      public String  tradingTest(@RequestBody Map body){
 //        System.out.println(isRightUser(Integer.parseInt(body.get("tradingId").toString()),Integer.parseInt(body.get("userId").toString()),Integer.parseInt(body.get("posId").toString())));
         return "{ 'habi':'habi'}";
     }
 
+    // TODO: 2020/6/15 根据tradingID查订单所有内容
+    //   根据日期查询订单
+    //  根据用户ID查询订单
+    //  根据支出or收入查询订单
+    //  计算总支出and收入
 
+
+    // TODO: 2020/6/15 职位表未完善，到时候再优化鉴权。
     /**
      * 鉴权开始
      */
