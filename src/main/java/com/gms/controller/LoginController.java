@@ -90,6 +90,8 @@ public class LoginController {
         }
         object.put("user", request.getSession().getAttribute("user"));
         object.put("routes", request.getSession().getAttribute("routes"));
+        int interval = request.getSession().getMaxInactiveInterval();
+        System.out.println("session过期时间(s):" + interval);
         return object;
     }
 
