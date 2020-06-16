@@ -31,15 +31,18 @@ public interface TradingMapper {
 
     //根据用户ID搜索交易
     @Select("select tradingId from Trading where userId=#{userId}")
-    List<Integer> getTradingByUserId(Trading trading);
+    List<Integer> getTradingIdByUserId(Trading trading);
 
     //根据交易类型搜索交易
     @Select("select tradingId from Trading where tradingType=#{tradingType}")
-    List<Integer> getTradingByTradingType(Trading trading);
+    List<Integer> getTradingIdByTradingType(Trading trading);
+
+    @Select("select * from Trading where tradingType=#{tradingType} ")
+    List<Trading>  getTradingByTradingType(int tradingType);
 
     //根据交易时间搜索交易
     @Select("select tradingId from Trading where tradingTime>=#{minTime} tradingTime<#{maxTime}")
-    List<Integer> getTradingByTradingTime(int minTime,int maxTime);
+    List<Integer> getTradingIdByTradingTime(int minTime,int maxTime);
 
 
     //新增一条交易
@@ -49,8 +52,13 @@ public interface TradingMapper {
 
 
     //删除一条交易
-    @Update("update Trading set isDelete=1 where tradingId=#{TradingId}")
-    public int deleteTrading(int trading);
+    @Update("update Trading set isDelete=1 where tradingId=#{tradingId}")
+    public int deleteTrading(int tradingId);
+
+    //修改一条交易
+    @Update("update Trading set userId=#{userId},tradingType=#{tradingType},counterParty=#{counterParty},transactionAmount=#{transactionAmount},tradingContent=#{tradingContent}" +
+            " where tradingId=#{tradingId}")
+    public int changeTrading(Trading trading);
 
 
 //    @Update("update Employee set Name=#{Name} where FileID=#{id}")

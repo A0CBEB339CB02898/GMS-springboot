@@ -22,66 +22,76 @@ public class TradingController {
     @Autowired
     TradingMapper tradingMapper;
 
-    // TODO: 2020/6/16 根据session获取当前用户ID
     /**
      * 新增交易
      * @param body 请求体
      * @return json
      */
     @PostMapping("/trading/add")
-    public JSONObject tradingAdd(@RequestBody Map body){
+    public JSONObject tradingAdd(@RequestBody Map body,HttpSession session){
         /**
          * 新增交易事件
          */
         JSONObject response = new JSONObject();
         Trading trading = new Trading();
+        User user =new User();
+
+        try{
+            user = (User) session.getAttribute("user");
+            if(body.get("tradingType")==null||body.get("counterParty")==null||body.get("transactionAmount")==null){
+                response.put("msc","fail! "+" 参数缺失，请检查！");
+                response.put("code","400");
+                return response;
+            }
+            else {
+                //7个参数 4个必须 2个自动生成 1个delete位
+                int userId = user.getUserId();
+                int tradingType = Integer.parseInt(body.get("tradingType").toString());
+                String counterParty =(String)body.get("counterParty");
+                int transactionAmount = Integer.parseInt(body.get("transactionAmount").toString());
+                int isDelete=0;
+                int tradingTime = (int) (System.currentTimeMillis() / 1000);
+                String tradingContent = "无";
+
+                //判断非必要参数
+                if(body.get("tradingTime")!=null){
+                    tradingTime = Integer.parseInt(body.get("tradingTime").toString());
+                }
+                if(body.get("tradingContent")!=null){
+                    tradingContent=(String)body.get("tradingContent");
+                }
+
+                try {
+                    //注入数据
+                    trading.setUserId(userId);
+                    trading.setTradingType(tradingType);
+                    trading.setTradingTime(tradingTime);
+                    trading.setCounterParty(counterParty);
+                    trading.setTransactionAmount(transactionAmount);
+                    trading.setIsDelete(isDelete);
+                    trading.setTradingContent(tradingContent);
+
+                    tradingMapper.insertTrading(trading);
+
+                    response.put("msg","suc");
+                    response.put("code",200);
+                }
+                catch (Exception e){
+                    response.put("msg",e);
+                    response.put("code",400);
+                }
+            }
+            return response;
+        }catch (NullPointerException e){
+            response.put("msg","请登录");
+            response.put("code",400);
+            return response;
+        }
+
 
 
         //判断必要请求参数
-        if(body.get("userId")==null||body.get("tradingType")==null||body.get("counterParty")==null||body.get("transactionAmount")==null){
-            response.put("msc","fail! "+" 参数缺失，请检查！");
-            response.put("code","400");
-            return response;
-        }
-        else {
-            //7个参数 4个必须 2个自动生成 1个delete位
-            int userId = Integer.parseInt(body.get("userId").toString());
-            int tradingType = Integer.parseInt(body.get("tradingType").toString());
-            String counterParty =(String)body.get("counterParty");
-            int transactionAmount = Integer.parseInt(body.get("transactionAmount").toString());
-            int isDelete=0;
-            int tradingTime = (int) (System.currentTimeMillis() / 1000);
-            String tradingContent = "无";
 
-            //判断非必要参数
-            if(body.get("tradingTime")!=null){
-                tradingTime = Integer.parseInt(body.get("tradingTime").toString());
-            }
-            if(body.get("tradingContent")!=null){
-                tradingContent=(String)body.get("tradingContent");
-            }
-
-            try {
-                //注入数据
-                trading.setUserId(userId);
-                trading.setTradingType(tradingType);
-                trading.setTradingTime(tradingTime);
-                trading.setCounterParty(counterParty);
-                trading.setTransactionAmount(transactionAmount);
-                trading.setIsDelete(isDelete);
-                trading.setTradingContent(tradingContent);
-
-                tradingMapper.insertTrading(trading);
-
-                response.put("msg","suc");
-                response.put("code",200);
-            }
-            catch (Exception e){
-                response.put("msg",e);
-                response.put("code",400);
-            }
-        }
-        return response;
     }
 
     /**
@@ -170,7 +180,7 @@ public class TradingController {
         //根据userId查询
         if (userId!=notSearch&&tradingId==notSearch){
             try{
-                listUserIdSearch= tradingMapper.getTradingByUserId(trading);
+                listUserIdSearch= tradingMapper.getTradingIdByUserId(trading);
             }catch (NullPointerException e){
                 jsonObject.put("userIdMsg",e);
                 jsonObject.put("code",400);
@@ -194,7 +204,7 @@ public class TradingController {
         //根据tradingType查询
         if (tradingType!=notSearch&&tradingId==notSearch){
             try{
-                listTypeSearch= tradingMapper.getTradingByTradingType(trading);
+                listTypeSearch= tradingMapper.getTradingIdByTradingType(trading);
             }catch (NullPointerException e){
                 jsonObject.put("tradingTypeMsg",e);
                 jsonObject.put("code",400);
@@ -218,7 +228,7 @@ public class TradingController {
         //根据tradingTime查询
         if (tradingTime!=notSearch&&tradingId==notSearch){
             try{
-                listTimeSearch=tradingMapper.getTradingByTradingTime(getTheDayZero(tradingTime),getTheDayTwelve(tradingTime));
+                listTimeSearch=tradingMapper.getTradingIdByTradingTime(getTheDayZero(tradingTime),getTheDayTwelve(tradingTime));
             }catch (NullPointerException e){
                 jsonObject.put("tradingTimeMsg",e);
                 jsonObject.put("code",400);
@@ -248,29 +258,34 @@ public class TradingController {
                     listResult.add(tradingMapper.getTradingByID(trading1));
                     }
 
-                    // TODO: 2020/6/16 优化 如果trading表不足pageSize则无法处理的问题
                     int pageBegin=count;
                     int pageEnd=count+pageSize;
                     //分页参数大小限制 如果count+pageSize超出大小，则返回最后一页
-                    if (pageBegin>listResult.size()){
-                        pageBegin=listResult.size()-1-pageSize;
-                        pageEnd=listResult.size()-1;
+                    if (pageBegin>=listResult.size()){
+
+                        //不足一页
+                        if(listResult.size()-pageSize<0){
+                            pageBegin=0;
+                        }else {
+                            pageBegin=listResult.size()-pageSize;
+                        }
+                        //sublist的toIndex不包含所以不需要-1
+                        pageEnd=listResult.size();
+
                     }
                     else if (count+pageSize>listResult.size()){
-                        pageEnd=listResult.size()-1;
+                        pageEnd=listResult.size();
                     }
                     listResult=listResult.subList(pageBegin,pageEnd);
+
                     jsonObject.put("tradingList",listResult);
-                    jsonObject.put("page",(int)(listResult.size()/10)+1);
+                    jsonObject.put("page",(int)(listResult.size()/pageSize)+1);
                     jsonObject.put("msg","suc");
                     jsonObject.put("code",200);
                 }catch (NullPointerException e){
-                    jsonObject.put("tradingList",listResult);
-                    jsonObject.put("page",(int)(listResult.size()/10)+1);
                     jsonObject.put("msg",e);
                     jsonObject.put("code",400);
                 }
-
         }
 
         return jsonObject;
@@ -278,22 +293,89 @@ public class TradingController {
 
 
 
+    //只能改用户、金额、交易方、金额、内容；
+    @PostMapping("/trading/change")
+    public JSONObject tradingChange(@RequestBody Map body,HttpSession session){
+        JSONObject jsonObject=new JSONObject();
+        Trading trading=new Trading();
+        User user=new User();
+        try {
+            user = (User) session.getAttribute("user");
+            if(isRightUser(Integer.parseInt(body.get("tradingId").toString()),user.getUserId(),user.getPosId())){
 
-    // TODO: 2020/6/15
-    //  计算总支出and收入
+                int tradingId= Integer.parseInt(body.get("tradingId").toString());
+                int userId = Integer.parseInt(body.get("userId").toString());
+                int tradingType = Integer.parseInt(body.get("tradingType").toString());
+                String counterParty =(String)body.get("counterParty");
+                int transactionAmount = Integer.parseInt(body.get("transactionAmount").toString());
+                String tradingContent = body.get("tradingContent").toString();
 
-    // TODO: 2020/6/15
-    //  修改交易内容 需要鉴权
+                try{
+                    trading.setTradingId(tradingId);
+                    trading.setUserId(userId);
+                    trading.setTradingType(tradingType);
+                    trading.setCounterParty(counterParty);
+                    trading.setTransactionAmount(transactionAmount);
+                    trading.setTradingContent(tradingContent);
+                    tradingMapper.changeTrading(trading);
+
+                    jsonObject.put("msg","修改成功");
+                    jsonObject.put("code",200);
+                }catch (NullPointerException e){
+                    jsonObject.put("msg",e);
+                    jsonObject.put("code",400);
+                    return jsonObject;
+                }
+            }
+            else {
+                jsonObject.put("msg","权限不足");
+                jsonObject.put("code",400);
+            }
+        }catch (NullPointerException e){
+            jsonObject.put("msg","未登录");
+            jsonObject.put("code",400);
+            return jsonObject;
+        }
+        return jsonObject;
+    }
 
 
 
     /**
+     * 查询总收入支出
+     * @param tradingType 1支出 2收入
+     * @return json
+     */
+    @GetMapping("/trading/total")
+    public JSONObject tradingTotal(int tradingType){
+        JSONObject jsonObject =new JSONObject();
+        List<Trading> tradingList=new ArrayList<>();
+        int total=0;
+        try{
+            tradingList=tradingMapper.getTradingByTradingType(tradingType);
+        }catch (NullPointerException e){
+            jsonObject.put("msg",e);
+            jsonObject.put("code",400);
+            return jsonObject;
+        }
+
+        for (int i=0;i<tradingList.size();i++){
+            total=total+tradingList.get(i).getTransactionAmount();
+        }
+        jsonObject.put("total",total);
+        jsonObject.put("msg","suc");
+        jsonObject.put("code",200);
+        return jsonObject;
+    }
+
+
+    /**
      * 测试接口
-     * @param
+     *
      * @return v 测试参数
      */
     @GetMapping("/trading/test")
-    public JSONObject  tradingTest(){
+    public String tradingTest(){
 //        System.out.println(isRightUser(Integer.parseInt(body.get("tradingId").toString()),Integer.parseInt(body.get("userId").toString()),Integer.parseInt(body.get("posId").toString())));
 //        User user=(User)session.getAttribute("user");
 //        System.out.println(user.getUsername());
@@ -301,7 +383,7 @@ public class TradingController {
 //        System.out.println("v==="+v);
 //        System.out.println(getTheDayZero(time));
 ////        System.out.println(getTheDayTwelve(time));
-        return searchNull();
+        return "habi";
 
     }
 
