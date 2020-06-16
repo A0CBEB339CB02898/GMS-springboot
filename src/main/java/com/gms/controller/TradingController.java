@@ -248,6 +248,17 @@ public class TradingController {
             }
         }
 
+        //查询所有
+        if(tradingId==notSearch&&userId==notSearch&&tradingType==notSearch&&tradingTime==notSearch){
+            try{
+                listIdResult=tradingMapper.getAllTradingIdNotDelete();
+            }catch (NullPointerException e){
+                jsonObject.put("msg",e);
+                jsonObject.put("code",400);
+            }
+
+
+        }
 
         //将混合查询得到的ID数组重新查询为trading数组
         if (listIdResult.get(0)!=notSearch){
