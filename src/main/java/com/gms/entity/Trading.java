@@ -7,7 +7,7 @@ public class Trading {
     private int tradingId;
     private int userId;
     private int tradingType;
-    private long tradingTime;
+    private int tradingTime;
     private String counterParty;
     private int transactionAmount;
     private String tradingContent;
@@ -39,11 +39,11 @@ public class Trading {
         this.tradingType = tradingType;
     }
 
-    public long getTradingTime() {
+    public int getTradingTime() {
         return tradingTime;
     }
 
-    public void setTradingTime(long tradingTime) {
+    public void setTradingTime(int tradingTime) {
         this.tradingTime = tradingTime;
     }
 
