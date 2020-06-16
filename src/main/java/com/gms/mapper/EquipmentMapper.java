@@ -13,8 +13,8 @@ public interface EquipmentMapper {
     @Select("select * from Equipment")
     List<Equipment> getAllEquipment();
 
-    @Insert("insert into Equipment(equipmentId,equipmentName,equipmentCost)" +
-            "values(#{equipmentId},#{equipmentName},#{equipmentCost})")
+    @Insert("insert into Equipment(equipmentId,equipmentName,equipmentCost,equipmentStatus)" +
+            "values(#{equipmentId},#{equipmentName},#{equipmentCost},#{equipmentStatus})")
     public int insertEquipment(Equipment equipment);
 
     @Update("update Equipment set equipmentStatus = 'repair' " +
