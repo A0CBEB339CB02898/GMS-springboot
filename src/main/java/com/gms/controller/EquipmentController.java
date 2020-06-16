@@ -40,11 +40,13 @@ public class EquipmentController {
             String equipmentId = (String)body.get("equipmentId");
             String equipmentName = (String)body.get("equipmentName");
             int equipmentCost = Integer.parseInt(body.get("equipmentCost").toString());
+            String equipmentStatus = "free";
 
             try{
                 equipment.setEquipmentId(equipmentId);
                 equipment.setEquipmentName(equipmentName);
                 equipment.setEquipmentCost(equipmentCost);
+                equipment.setEquipmentStatus(equipmentStatus);
 
                 equipmentMapper.insertEquipment(equipment);
 
