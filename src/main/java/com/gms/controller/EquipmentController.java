@@ -40,11 +40,13 @@ public class EquipmentController {
             String equipmentId = (String)body.get("equipmentId");
             String equipmentName = (String)body.get("equipmentName");
             int equipmentCost = Integer.parseInt(body.get("equipmentCost").toString());
+            String equipmentStatus = "free";
 
             try{
                 equipment.setEquipmentId(equipmentId);
                 equipment.setEquipmentName(equipmentName);
                 equipment.setEquipmentCost(equipmentCost);
+                equipment.setEquipmentStatus(equipmentStatus);
 
                 equipmentMapper.insertEquipment(equipment);
 
@@ -92,49 +94,12 @@ public class EquipmentController {
         return response;
     }
 
-    @GetMapping("/equipment/search2")
-    public JSONObject equipmentSearch2(){
-        JSONObject response = new JSONObject();
-//        Equipment equipment = new Equipment();
-        List<Equipment> equipmentList = new ArrayList<>();
-        equipmentList = equipmentMapper.getAllEquipment();
-//        String str = null;
-//        String strAll = "";
-//        int i;
-//        equipments = equipmentMapper.getAllEquipment();
-//        for(i = 0;i < equipments.size();i++) {
-//            str = "";
-//            str += "equipmentId:" + equipments.get(i).getEquipmentId() + ",";
-//            str += "equipmentName:" + equipments.get(i).getEquipmentName() + ",";
-//            str += "equipmentCost:" + equipments.get(i).getEquipmentCost() + ",";
-//            str += "equipmentStatus:" + equipments.get(i).getEquipmentStatus() + ",";
-//            str += "equipmentTime:" + equipments.get(i).getEquipmentTime() + ",";
-//            str += "equipmentRenter:" + equipments.get(i).getEquipmentRenterId() + ",";
-//            strAll += str + "\n";
-//        }
-//        return strAll;
-        if(equipmentList.size()!=0){
-            response.put("message", "请求成功");
-            response.put("code", 200);
-        }else {
-            response.put("message", "失败");
-            response.put("code", 404);
-        }
-        response.put("equipments",equipmentList);
-
-
-        return response;
-
-
-    }
-
     @PostMapping("/equipment/search")
     public JSONObject equipmentSearch(@RequestBody Map body){
         JSONObject response = new JSONObject();
         Equipment equipment = new Equipment();
         List<Equipment> equipmentList = new ArrayList<>();
-        String searchSql = "";
-        int i = 0;
+
 
         if(body.get("equipmentId")==null && body.get("equipmentName")==null && body.get("equipmentCost")==null && body.get("equipmentStatus")==null && body.get("equipmentRentId")==null){
                 if(equipmentList.size()!=0){
@@ -147,76 +112,44 @@ public class EquipmentController {
                     equipmentList = equipmentMapper.getAllEquipment();
                     response.put("equipments", equipmentList);
             }
-        else {
-//此算法暂时无效
 
-            if(body.get("equipmentId")!=null){
-                String equipmentId = (String)body.get("equipmentId");
+//此算法暂时无效
+        else {
+            if (body.get("equipmentId") != null) {
+                String equipmentId = (String) body.get("equipmentId");
                 equipment.setEquipmentId(equipmentId);
-                i = 1;
-                searchSql += "equipmentId = " + equipmentId;
             }
-            if(body.get("equipmentName")!=null){
-                String equipmentName = (String)body.get("equipmentName");
+            if (body.get("equipmentName") != null) {
+                String equipmentName = (String) body.get("equipmentName");
                 equipment.setEquipmentName(equipmentName);
-                if(i == 0){
-                    i = 1;
-                    searchSql += "equipmentName = " + equipmentName;
-                }
-                else{
-                    searchSql += " and equipmentName = " + equipmentName;
-                }
             }
-            if(body.get("equipmentCost")!=null){
+            if (body.get("equipmentCost") != null) {
                 int equipmentCost = Integer.parseInt(body.get("equipmentCost").toString());
                 equipment.setEquipmentCost(equipmentCost);
-                if(i == 0){
-                    i = 1;
-                    searchSql += "equipmentCost = " + equipmentCost;
-                }
-                else{
-                    searchSql += " and equipmentCost =" + equipmentCost;
-                }
             }
-            if(body.get("equipmentStatus")!=null){
-                String equipmentStatus = (String)body.get("equipmentStatus");
+            if (body.get("equipmentStatus") != null) {
+                String equipmentStatus = (String) body.get("equipmentStatus");
                 equipment.setEquipmentStatus(equipmentStatus);
-                if(i == 0){
-                    i = 1;
-                    searchSql += "equipmentStatus = " + equipmentStatus;
-                }
-                else{
-                    searchSql += " and equipmentStatus = " + equipmentStatus;
-                }
             }
-            if(body.get("equipmentRenterId")!=null){
+            if (body.get("equipmentRenterId") != null) {
                 int equipmentRenterId = Integer.parseInt(body.get("equipmentRenterId").toString());
                 equipment.setEquipmentRenterId(equipmentRenterId);
-                if(i == 0){
-                    i = 1;
-                    searchSql += "equipmentRenterId = " + equipmentRenterId;
-                }
-                else{
-                    searchSql += " and equipmentRenterId = " + equipmentRenterId;
-                }
             }
 
-            try{
-                System.out.println(searchSql);
+            try {
 
-                equipmentList = equipmentMapper.searchEquipment(searchSql);
+                equipmentList = equipmentMapper.searchEquipment(equipment);
 
-                response.put("msg","suc");
-                response.put("code",200);
+                response.put("msg", "suc");
+                response.put("code", 200);
 
-            }
-            catch (Exception e){
-                response.put("msg",e);
-                response.put("code",400);
+            } catch (Exception e) {
+                response.put("msg", e);
+                response.put("code", 400);
             }
             response.put("equipments", equipmentList);
-        }
 
+        }
 
         return response;
 
