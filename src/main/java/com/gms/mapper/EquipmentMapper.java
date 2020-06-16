@@ -21,8 +21,29 @@ public interface EquipmentMapper {
             "where equipmentId = #{equipmentId}")
     public int repairEquipment(Equipment equipment);
 
-    @Select("select * from Equipment where #{searchSql}")
-    List<Equipment> searchEquipment(String searchSql);
+    @Select({"<script>" +
+            "select * from Equipment where 1=1" +
+            "<if test='#{equipmentId} != null'>" +
+            " and equipmentId = #{equipmentId}" +
+            "</if>" +
+            "<if test='#{equipmentName} != null'>" +
+            " and equipmentName = #{equipmentName}" +
+            "</if>" +
+            "<if test='#{equipmentCost} != null'>" +
+            " and equipmentCost = #{equipmentCost}" +
+            "</if>" +
+            "<if test='#{equipmentStatus} != null'>" +
+            " and equipmentStatus = #{equipmentStatus}" +
+            "</if>" +
+            "<if test='#{equipmentRenterId} != null'>" +
+            " and equipmentRenterId = #{equipmentRenterId}" +
+            "</if>" +
+            "</script>"})
+    List<Equipment> searchEquipment(Equipment equipment);
+
+//    @Select("select * from Equipment where 1 " +
+//            "and #{str}")
+//    List<Equipment> searchEquipment(String str);
 
     @Delete("delete from Equipment where equipmentId = #{equipmentId}")
     public int deleteEquipment(Equipment equipment);
