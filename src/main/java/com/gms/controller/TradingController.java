@@ -287,10 +287,9 @@ public class TradingController {
                     else if (count+pageSize>listResult.size()){
                         pageEnd=listResult.size();
                     }
+                    jsonObject.put("page",Math.ceil((double)listResult.size()/pageSize));
                     listResult=listResult.subList(pageBegin,pageEnd);
-
                     jsonObject.put("tradingList",listResult);
-                    jsonObject.put("page",(int)(listResult.size()/pageSize)+1);
                     jsonObject.put("msg","suc");
                     jsonObject.put("code",200);
                 }catch (NullPointerException e){
