@@ -20,9 +20,10 @@ public class UserController {
     private List<User> users;
 
     @GetMapping("/users")
-    public JSONObject getAllUser(){
+    public JSONObject getUser(int page){
         List<User> userList = new ArrayList<>();
-        userList = userMapper.getAllUser();
+        userList = userMapper.getUser(page*10);
+        int totalPage = (int)(Math.ceil(userMapper.countUsers()/10));
         JSONObject object = new JSONObject();
         if(userList.size()!=0){
             object.put("message", "请求成功");
@@ -32,6 +33,7 @@ public class UserController {
             object.put("code", 404);
         }
         object.put("users", userList);
+        object.put("totalPage", totalPage);
         return object;
     }
 
