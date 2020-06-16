@@ -24,6 +24,7 @@ public class LoginController {
         List<User> userList = new ArrayList<>();
         String md5Pass = DigestUtils.md5DigestAsHex(user.get("password").toString().getBytes());
         userList = userMapper.login(user.get("username").toString(), md5Pass);
+        System.out.println(user.get("username").toString()+"====="+md5Pass);
         JSONObject object = new JSONObject();
         System.out.println(userList);
         if (userList.size() != 0) {

@@ -18,8 +18,11 @@ public interface UserMapper {
     @Update("update User set password=#{password} where (username=#{username} and phoneNum=#{phoneNum}) or (username=#{username} and email=#{email})")
     int changePassword(@Param("password") String password, @Param("username") String username, @Param("phoneNum") String phoneNum, @Param("email") String email);
 
-    @Select("select * from User")
-    List<User> getAllUser();
+    @Select("select * from User limit #{offset},10")
+    List<User> getUser(int offset);
+
+    @Select("select count(*) from GMSdb.User where state=1;")
+    double countUsers();
 
     @Update("update User set posId=#{posId} where userId=#{userId}")
     int addManager(int posId, int userId);
