@@ -169,10 +169,17 @@ public class TradingController {
                 jsonObject.put("tradingIdMsg",e);
                 jsonObject.put("code",400);
             }
-            jsonObject.put("tradingList",listTradingIdSearch);
-            jsonObject.put("page",(int)(listTradingIdSearch.size()/10)+1);
-            jsonObject.put("msg","suc");
-            jsonObject.put("code",200);
+            if (listTradingIdSearch.get(0)==null){
+                jsonObject.put("tradingList",listTradingIdSearch);
+                jsonObject.put("page",(int)(listTradingIdSearch.size()/10)+1);
+                jsonObject.put("msg","搜索失败");
+                jsonObject.put("code",400);
+            }else{
+                jsonObject.put("tradingList",listTradingIdSearch);
+                jsonObject.put("page",(int)(listTradingIdSearch.size()/10)+1);
+                jsonObject.put("msg","搜索成功");
+                jsonObject.put("code",200);
+            }
             return jsonObject;
         }
 
