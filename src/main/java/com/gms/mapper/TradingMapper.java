@@ -20,7 +20,8 @@ public interface TradingMapper {
     //搜索所有未删除的交易
     @Select("select tradingId from Trading where isDelete=0")
     List<Integer> getAllTradingIdNotDelete();
-
+    @Select("select * from Trading where isDelete=0")
+    List<Trading> getAllTradingNotDelete();
     //搜索所有已删除的交易
     @Select("select tradingId from Trading where isDelete=1")
     List<Integer> getAllTradingIdDeleted();

@@ -145,7 +145,7 @@ public class TradingController {
         JSONObject jsonObject=new JSONObject();
         Trading trading=new Trading();
         final int notSearch=-1;
-        final int pageSize=10;
+        final int pageSize=7;
 
         trading.setTradingId(tradingId);
         trading.setTradingTime(tradingTime);
@@ -251,7 +251,30 @@ public class TradingController {
         //查询所有
         if(tradingId==notSearch&&userId==notSearch&&tradingType==notSearch&&tradingTime==notSearch){
             try{
-                listIdResult=tradingMapper.getAllTradingIdNotDelete();
+                listResult=tradingMapper.getAllTradingNotDelete();
+                int pageBegin=count;
+                int pageEnd=count+pageSize;
+                //分页参数大小限制 如果count+pageSize超出大小，则返回最后一页
+                if (pageBegin>=listResult.size()){
+                    //不足一页
+                    if(listResult.size()-pageSize<0){
+                        pageBegin=0;
+                    }else {
+                        pageBegin=listResult.size()-pageSize;
+                    }
+                    //sublist的toIndex不包含所以不需要-1
+                    pageEnd=listResult.size();
+                }
+                else if (count+pageSize>listResult.size()){
+                    pageEnd=listResult.size();
+                }
+                jsonObject.put("page",Math.ceil((double)listResult.size()/pageSize));
+                listResult=listResult.subList(pageBegin,pageEnd);
+                jsonObject.put("tradingList",listResult);
+                jsonObject.put("msg","suc");
+                jsonObject.put("code",200);
+                return jsonObject;
+
             }catch (NullPointerException e){
                 jsonObject.put("msg",e);
                 jsonObject.put("code",400);
