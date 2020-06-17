@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.gms.entity.*;
 
 import com.gms.mapper.GameMapper;
+import com.sun.xml.internal.bind.v2.TODO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,20 +19,34 @@ import java.util.Map;
 public class GameController {
     @Autowired
     public GameMapper gameMapper;
-    private List<Game> games;
+    //private List<Game> games;
     private List<GamePosition> gamePositions;
     private List<GameEquipment> gameEquipments;
 
 
 
     @GetMapping("/game/game")
-    public String Game(){
-        String str=null;
+    public JSONObject Game(){
+//        JSONObject response = new JSONObject();
+//        String str=null;
+//        games = gameMapper.getAllGame();
+//        str = games.get(0).getGameId()+games.get(0).getGameName();
+//        System.out.println(str);
+//        response.put("game",games);
+//        return response;
+        List<Game> games;
         games = gameMapper.getAllGame();
-        str = games.get(0).getGameId()+games.get(0).getGameName();
-        System.out.println(str);
-        return str;
-
+        System.out.println("games:"+games);
+        JSONObject object = new JSONObject();
+        if( games.size()!=0){
+            object.put("message", "请求成功");
+            object.put("code", 200);
+        }else{
+            object.put("message", "请求失败");
+            object.put("code", 404);
+        }
+        object.put("game",games);
+        return object;
     }
 
     @GetMapping("/game/gamePosition")
@@ -44,7 +59,7 @@ public class GameController {
 
     }
 
-    @GetMapping("/game/game/gameEquipment")
+    @GetMapping("/game/gameEquipment")
     public String GameEquipment(){
         String str=null;
         gameEquipments = gameMapper.getAllGameEquipment();
@@ -127,13 +142,14 @@ public class GameController {
 
         return response;
     }
-    //暂时无效
+
     @GetMapping("/game/search")
-    public JSONObject GameSearchByName(String gameName){
+    public JSONObject GameSearchByName(@RequestBody Map body){
         JSONObject response = new JSONObject();
-        System.out.println("gameName:"+gameName);
-        List<Game> games = new ArrayList<>();
-        games = gameMapper.SearchGameByName();
+       // System.out.println("gameName:"+gameName);
+        List<Game> games;
+        games = gameMapper.SearchGameByName(body.get("gameName").toString());
+        //games = gameMapper.SearchGameByName();
         System.out.println("games:"+games);
         if(games.size()!=0){
             response.put("message", "查询成功");
@@ -143,6 +159,141 @@ public class GameController {
             response.put("code", 404);
         }
         response.put("games",games);
+        return response;
+    }
+
+    @PostMapping("/game/addEquipment")
+    public JSONObject GameEquipmentAdd(@RequestBody Map body){
+        JSONObject response = new JSONObject();
+        GameEquipment gameEquipment = new GameEquipment();
+
+        if(body.get("equipmentId")==null || body.get("gameId")==null || body.get("equipmentName")==null){
+            response.put("msc","fail! "+" 参数缺失，请检查！");
+            response.put("code","400");
+            return response;
+        }
+        else{
+            int equipmentId = Integer.parseInt(body.get("equipmentId").toString());
+            int gameId = Integer.parseInt(body.get("gameId").toString());
+            String equipmentName = (String)body.get("equipmentName");
+
+
+            try{
+                gameEquipment.setEquipmentId(equipmentId);
+                gameEquipment.setGameId(gameId);
+                gameEquipment.setEquipmentName(equipmentName);
+                gameMapper.InsertGameEquipment(gameEquipment);
+
+                response.put("msg","suc");
+                response.put("code",200);
+
+            }
+            catch (Exception e){
+                response.put("msg",e);
+                response.put("code",400);
+            }
+        }
+
+        return response;
+    }
+
+
+    @PostMapping("/game/addPosition")
+    public JSONObject GamePositionAdd(@RequestBody Map body){
+        JSONObject response = new JSONObject();
+        GamePosition gamePosition = new GamePosition();
+
+        if(body.get("bookId")==null || body.get("gameId")==null || body.get("positionName")==null){
+            response.put("msc","fail! "+" 参数缺失，请检查！");
+            response.put("code","400");
+            return response;
+        }
+        else{
+            int bookId = Integer.parseInt(body.get("bookId").toString());
+            int gameId = Integer.parseInt(body.get("gameId").toString());
+            String positionName = (String)body.get("positionName");
+            System.out.println("position:"+positionName);
+
+            try{
+                gamePosition.setBookId(bookId);
+                gamePosition.setGameId(gameId);
+                gamePosition.setPositionName(positionName);
+                gameMapper.InsertGamePosition(gamePosition);
+
+                response.put("msg","suc");
+                response.put("code",200);
+
+            }
+            catch (Exception e){
+                response.put("msg",e);
+                response.put("code",400);
+            }
+        }
+
+        return response;
+    }
+
+    @PostMapping("/game/deleteEquipment")
+    public JSONObject GameEquipmentDelete(@RequestBody Map body){
+        JSONObject response = new JSONObject();
+        GameEquipment gameEquipment = new GameEquipment();
+
+        if(body.get("gameId")==null){
+            response.put("msc","fail! "+" 参数缺失，请检查！");
+            response.put("code","400");
+            return response;
+        }
+        else{
+            int gameId = Integer.parseInt(body.get("gameId").toString());
+
+
+            try{
+                gameEquipment.setGameId(gameId);
+
+                gameMapper.DeleteGameEquipment(gameEquipment);
+
+                response.put("msg","suc");
+                response.put("code",200);
+
+            }
+            catch (Exception e){
+                response.put("msg",e);
+                response.put("code",400);
+            }
+        }
+
+        return response;
+    }
+    //
+    @PostMapping("/game/deletePosition")
+    public JSONObject GameDeletePosition(@RequestBody Map body){
+        JSONObject response = new JSONObject();
+        GamePosition gamePosition = new GamePosition();
+
+        if(body.get("gameId")==null){
+            response.put("msc","fail! "+" 参数缺失，请检查！");
+            response.put("code","400");
+            return response;
+        }
+        else{
+            int gameId = Integer.parseInt(body.get("gameId").toString());
+
+
+            try{
+                gamePosition.setGameId(gameId);
+
+                gameMapper.DeleteGamePosition(gamePosition);
+
+                response.put("msg","suc");
+                response.put("code",200);
+
+            }
+            catch (Exception e){
+                response.put("msg",e);
+                response.put("code",400);
+            }
+        }
+
         return response;
     }
 }
