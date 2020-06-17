@@ -73,7 +73,7 @@ public class TradingController {
 
                     tradingMapper.insertTrading(trading);
 
-                    response.put("msg","suc");
+                    response.put("msg","增加成功");
                     response.put("code",200);
                 }
                 catch (Exception e){
