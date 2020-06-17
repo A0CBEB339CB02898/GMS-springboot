@@ -31,18 +31,18 @@ public interface TradingMapper {
     Trading getTradingByID(Trading trading);
 
     //根据用户ID搜索交易
-    @Select("select tradingId from Trading where userId=#{userId}")
+    @Select("select tradingId from Trading where userId=#{userId} and isDelete=0")
     List<Integer> getTradingIdByUserId(Trading trading);
 
     //根据交易类型搜索交易
-    @Select("select tradingId from Trading where tradingType=#{tradingType}")
+    @Select("select tradingId from Trading where tradingType=#{tradingType} and isDelete=0")
     List<Integer> getTradingIdByTradingType(Trading trading);
 
     @Select("select * from Trading where tradingType=#{tradingType} ")
     List<Trading>  getTradingByTradingType(int tradingType);
 
     //根据交易时间搜索交易
-    @Select("select tradingId from Trading where tradingTime>=#{minTime} tradingTime<#{maxTime}")
+    @Select("select tradingId from Trading where tradingTime>=#{minTime} and tradingTime<#{maxTime} and isDelete=0")
     List<Integer> getTradingIdByTradingTime(int minTime,int maxTime);
 
 
