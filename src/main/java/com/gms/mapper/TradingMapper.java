@@ -38,7 +38,8 @@ public interface TradingMapper {
     @Select("select tradingId from Trading where tradingType=#{tradingType} and isDelete=0")
     List<Integer> getTradingIdByTradingType(Trading trading);
 
-    @Select("select * from Trading where tradingType=#{tradingType} ")
+    //返回trading
+    @Select("select * from Trading where tradingType=#{tradingType} and isDelete=0")
     List<Trading>  getTradingByTradingType(int tradingType);
 
     //根据交易时间搜索交易
