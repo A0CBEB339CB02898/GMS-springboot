@@ -30,10 +30,11 @@ public class EquipmentController {
     public JSONObject equipmentAdd(@RequestBody Map body){
         JSONObject response = new JSONObject();
         Equipment equipment = new Equipment();
+        final int pageSize = 10;
 
         if(body.get("equipmentId")==null || body.get("equipmentName")==null || body.get("equipmentCost")==null){
             response.put("msc","fail! "+" 参数缺失，请检查！");
-            response.put("code","400");
+            response.put("code",404);
             return response;
         }
         else{
@@ -70,7 +71,7 @@ public class EquipmentController {
 
         if(body.get("equipmentId")==null){
             response.put("msc","fail! "+" 参数缺失，请检查！");
-            response.put("code","400");
+            response.put("code",404);
             return response;
         }
         else{
@@ -163,7 +164,7 @@ public class EquipmentController {
 
         if(body.get("equipmentId")==null){
             response.put("msc","fail! "+" 参数缺失，请检查！");
-            response.put("code","400");
+            response.put("code",404);
             return response;
         }
         else{
@@ -194,7 +195,7 @@ public class EquipmentController {
 
         if(body.get("equipmentId")==null || body.get("equipmentRenterId")==null){
             response.put("msc","fail! "+" 参数缺失，请检查！");
-            response.put("code","400");
+            response.put("code",404);
             return response;
         }
         else{
@@ -229,7 +230,7 @@ public class EquipmentController {
 
         if(body.get("equipmentId")==null){
             response.put("msc","fail! "+" 参数缺失，请检查！");
-            response.put("code","400");
+            response.put("code",404);
             return response;
         }
         else{

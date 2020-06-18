@@ -52,7 +52,7 @@ public interface EquipmentMapper {
             "where equipmentId = #{equipmentId}")
     public int rentEquipment(Equipment equipment);
 
-    @Update("update Equipment set equipmentStatus = 'free',equipmentRenterId = null " +
+    @Update("update Equipment set equipmentStatus = 'free',equipmentRenterId = null,equipmentTime = null " +
             "where equipmentId = #{equipmentId}")
     public int recycleEquipment(Equipment equipment);
 }

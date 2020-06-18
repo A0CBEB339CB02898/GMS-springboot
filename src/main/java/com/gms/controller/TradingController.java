@@ -73,7 +73,7 @@ public class TradingController {
 
                     tradingMapper.insertTrading(trading);
 
-                    response.put("msg","suc");
+                    response.put("msg","增加成功");
                     response.put("code",200);
                 }
                 catch (Exception e){
@@ -133,22 +133,22 @@ public class TradingController {
     /**
      * 动态查询 value=-1即不作限制(不查询)
      * @param tradingId 交易Id
-     * @param tradingTime 交易事件
+     * @param tradingTimeBegin 交易时间起始
+     * @param tradingTimeEnd 交易时间结束
      * @param userId 用户Id
      * @param tradingType 交易类型
      * @param count 查询的页数
      * @return json 查询结果
      */
     @GetMapping("/trading/search")
-    public JSONObject tradingSearch(int tradingId,int userId,int tradingType,int tradingTime,int count){
+    public JSONObject tradingSearch(int tradingId,int userId,int tradingType,int tradingTimeBegin,int tradingTimeEnd,int count){
 
         JSONObject jsonObject=new JSONObject();
         Trading trading=new Trading();
         final int notSearch=-1;
-        final int pageSize=7;
+        final int pageSize=8;
 
         trading.setTradingId(tradingId);
-        trading.setTradingTime(tradingTime);
         trading.setUserId(userId);
         trading.setTradingType(tradingType);
 
@@ -169,10 +169,17 @@ public class TradingController {
                 jsonObject.put("tradingIdMsg",e);
                 jsonObject.put("code",400);
             }
-            jsonObject.put("tradingList",listTradingIdSearch);
-            jsonObject.put("page",(int)(listTradingIdSearch.size()/10)+1);
-            jsonObject.put("msg","suc");
-            jsonObject.put("code",200);
+            if (listTradingIdSearch.get(0)==null){
+                jsonObject.put("tradingList",listTradingIdSearch);
+                jsonObject.put("page",(int)(listTradingIdSearch.size()/10)+1);
+                jsonObject.put("msg","搜索失败");
+                jsonObject.put("code",400);
+            }else{
+                jsonObject.put("tradingList",listTradingIdSearch);
+                jsonObject.put("page",(int)(listTradingIdSearch.size()/10)+1);
+                jsonObject.put("msg","搜索成功");
+                jsonObject.put("code",200);
+            }
             return jsonObject;
         }
 
@@ -226,9 +233,9 @@ public class TradingController {
         }
 
         //根据tradingTime查询
-        if (tradingTime!=notSearch&&tradingId==notSearch){
+        if (tradingTimeBegin!=notSearch&&tradingTimeEnd!=notSearch&&tradingId==notSearch){
             try{
-                listTimeSearch=tradingMapper.getTradingIdByTradingTime(getTheDayZero(tradingTime),getTheDayTwelve(tradingTime));
+                listTimeSearch=tradingMapper.getTradingIdByTradingTime(getTheDayZero(tradingTimeBegin),getTheDayTwelve(tradingTimeEnd));
             }catch (NullPointerException e){
                 jsonObject.put("tradingTimeMsg",e);
                 jsonObject.put("code",400);
@@ -249,7 +256,7 @@ public class TradingController {
         }
 
         //查询所有
-        if(tradingId==notSearch&&userId==notSearch&&tradingType==notSearch&&tradingTime==notSearch){
+        if(tradingId==notSearch&&userId==notSearch&&tradingType==notSearch&&tradingTimeBegin==notSearch&&tradingTimeEnd==notSearch){
             try{
                 listResult=tradingMapper.getAllTradingNotDelete();
                 int pageBegin=count;
@@ -271,7 +278,7 @@ public class TradingController {
                 jsonObject.put("page",Math.ceil((double)listResult.size()/pageSize));
                 listResult=listResult.subList(pageBegin,pageEnd);
                 jsonObject.put("tradingList",listResult);
-                jsonObject.put("msg","suc");
+                jsonObject.put("msg","搜索成功");
                 jsonObject.put("code",200);
                 return jsonObject;
 
@@ -313,7 +320,7 @@ public class TradingController {
                     jsonObject.put("page",Math.ceil((double)listResult.size()/pageSize));
                     listResult=listResult.subList(pageBegin,pageEnd);
                     jsonObject.put("tradingList",listResult);
-                    jsonObject.put("msg","suc");
+                    jsonObject.put("msg","搜索成功");
                     jsonObject.put("code",200);
                 }catch (NullPointerException e){
                     jsonObject.put("msg",e);
