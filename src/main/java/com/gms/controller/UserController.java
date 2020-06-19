@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.gms.entity.User;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,17 +38,57 @@ public class UserController {
         return object;
     }
 
+    @GetMapping("/deletedUsers")
+    public JSONObject getDeletedUsers(){
+        List<User> userList = new ArrayList<>();
+        userList = userMapper.getDeletedUsers();
+        int totalPage = (int)(Math.ceil(userMapper.countDeletedUsers()/10));
+        JSONObject object = new JSONObject();
+        if(userList.size()!=0){
+            object.put("message", "请求成功");
+            object.put("code", 200);
+        }else {
+            object.put("message", "失败");
+            object.put("code", 404);
+        }
+        object.put("users", userList);
+        object.put("totalPage", totalPage);
+        return object;
+    }
+
+    @PostMapping("/rollbackUser")
+    public JSONObject rollbackuser(@RequestBody Map user){
+        JSONObject object = new JSONObject();
+        int userId = Integer.parseInt(String.valueOf(user.get("userId")));
+        int line=0;
+        try {
+            line= userMapper.rollbackUser(userId);
+        } catch (Exception e){
+            object.put("message", "撤回失败");
+            object.put("code", 404);
+        }
+        if(line>=1){
+            object.put("message", "撤回成功");
+            object.put("code", 200);
+        }else {
+            object.put("message", "撤回失败");
+            object.put("code", 404);
+        }
+        return object;
+    }
+
     @PostMapping("/manageUser/add")
     public JSONObject addManager(@RequestBody Map user){
         JSONObject object = new JSONObject();
-        int posId = Integer.parseInt(String.valueOf(user.get("posId")));
-        int userId = Integer.parseInt(String.valueOf(user.get("userId")));
-        int line = userMapper.addManager(posId, userId);
+        int posId = 2;
+        String defaultPass = "123";
+        String md5Pass = DigestUtils.md5DigestAsHex(defaultPass.getBytes());
+        int line = userMapper.addManager(user.get("username").toString(), md5Pass, user.get("phoneNum").toString(), posId, user.get("email").toString());
         if(line>=1){
-            object.put("message", "修改成功");
+            object.put("message", "添加成功");
             object.put("code", 200);
         }else {
-            object.put("message", "修改失败");
+            object.put("message", "添加失败");
             object.put("code", 404);
         }
         return object;

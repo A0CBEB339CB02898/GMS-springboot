@@ -24,11 +24,20 @@ public interface UserMapper {
     @Select("select count(*) from GMSdb.User where state=1;")
     double countUsers();
 
-    @Update("update User set posId=#{posId} where userId=#{userId}")
-    int addManager(int posId, int userId);
+    @Update("insert into User (username, password, phoneNum, posId, email) VALUES (#{username}, #{password}, #{phoneNum}, #{posId}, #{email});")
+    int addManager(String username, String password, String phoneNum, int posId, String email);
 
     @Update("update User set state=0 where userId=#{userId}")
     int deleteManager(int userId);
+
+    @Select("select * from GMSdb.User where state=0")
+    List<User> getDeletedUsers();
+
+    @Select("select count(*) from GMSdb.User where state=0")
+    double countDeletedUsers();
+
+    @Update("update User set state=1 where userId=#{userId}")
+    int rollbackUser(int userId);
 
     @Select("select * from GMSdb.User where posId=2 and state=1")
     List<User> queryAllManager();
