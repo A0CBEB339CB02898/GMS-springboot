@@ -254,9 +254,40 @@ public class EquipmentController {
         return response;
     }
 
-    @GetMapping("/equipment/standard")
-    public String equipmentStandard(){
-        String str="This is standard";
-        return str;
+    @PostMapping("/equipment/change")
+    public JSONObject equipmentChange(@RequestBody Map body){
+        JSONObject response = new JSONObject();
+        Equipment equipment = new Equipment();
+
+        if(body.get("equipmentIdOld")==null || body.get("equipmentId")==null || body.get("equipmentName")==null || body.get("equipmentCost")==null){
+            response.put("msc","fail! "+" 参数缺失，请检查！");
+            response.put("code",404);
+            return response;
+        }
+        else{
+            String equipmentIdOld = (String)body.get("equipmentIdOld");
+            String equipmentId = (String)body.get("equipmentId");
+            String equipmentName = (String)body.get("equipmentName");
+            int equipmentCost = Integer.parseInt(body.get("equipmentCost").toString());
+
+            try{
+                equipment.setEquipmentIdOld(equipmentIdOld);
+                equipment.setEquipmentId(equipmentId);
+                equipment.setEquipmentName(equipmentName);
+                equipment.setEquipmentCost(equipmentCost);
+
+                equipmentMapper.changeEquipment(equipment);
+
+                response.put("msg","suc");
+                response.put("code",200);
+
+            }
+            catch (Exception e){
+                response.put("msg",e);
+                response.put("code",400);
+            }
+        }
+
+        return response;
     }
 }
