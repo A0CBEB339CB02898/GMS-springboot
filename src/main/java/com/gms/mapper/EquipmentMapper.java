@@ -55,4 +55,8 @@ public interface EquipmentMapper {
     @Update("update Equipment set equipmentStatus = 'free',equipmentRenterId = null,equipmentTime = null " +
             "where equipmentId = #{equipmentId}")
     public int recycleEquipment(Equipment equipment);
+
+    @Update("update Equipment set equipmentId = #{equipmentId},equipmentName = #{equipmentName},equipmentCost = #{equipmentCost} " +
+            "where equipmentId = #{equipmentIdOld}")
+    public int changeEquipment(Equipment equipment);
 }

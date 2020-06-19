@@ -2,6 +2,7 @@ package com.gms.entity;
 
 public class Equipment {
     private String equipmentId;
+    private String equipmentIdOld;
     private String equipmentName;
     private int equipmentCost;
     private String equipmentStatus;
@@ -14,6 +15,14 @@ public class Equipment {
 
     public void setEquipmentId(String equipmentId) {
         this.equipmentId = equipmentId;
+    }
+
+    public String getEquipmentIdOld() {
+        return equipmentIdOld;
+    }
+
+    public void setEquipmentIdOld(String equipmentIdOld) {
+        this.equipmentIdOld = equipmentIdOld;
     }
 
     public String getEquipmentName() {
