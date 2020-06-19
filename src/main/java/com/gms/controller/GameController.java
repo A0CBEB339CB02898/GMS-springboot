@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -26,16 +27,10 @@ public class GameController {
 
 
     @GetMapping("/game/game")
-    public JSONObject Game(){
-//        JSONObject response = new JSONObject();
-//        String str=null;
-//        games = gameMapper.getAllGame();
-//        str = games.get(0).getGameId()+games.get(0).getGameName();
-//        System.out.println(str);
-//        response.put("game",games);
-//        return response;
+    public JSONObject Game(int page){
         List<Game> games;
-        games = gameMapper.getAllGame();
+        games = gameMapper.getAllGame(page*10);
+        int totalPage = (int)(Math.ceil(gameMapper.countUsers()/10));/**向上取整*/
         System.out.println("games:"+games);
         JSONObject object = new JSONObject();
         if( games.size()!=0){
@@ -46,6 +41,7 @@ public class GameController {
             object.put("code", 404);
         }
         object.put("game",games);
+        object.put("totalPage", totalPage);
         return object;
     }
 
@@ -70,45 +66,52 @@ public class GameController {
     }
 
     @PostMapping("/game/add")
-    public JSONObject GameAdd(@RequestBody Map body){
+    public JSONObject GameAdd(@RequestBody Map body) {
         JSONObject response = new JSONObject();
         Game game = new Game();
+        //User user = new User();
 
-        if(body.get("gameId")==null || body.get("gameName")==null || body.get("event")==null ||
-           body.get("holdingTime")==null || body.get("sponsor")==null || body.get("userId")==null){
-            response.put("msc","fail! "+" 参数缺失，请检查！");
-            response.put("code","400");
+       // try {
+            //user = (User) session.getAttribute("user");
+            if (body.get("gameId") == null || body.get("gameName") == null || body.get("event") == null ||
+                body.get("holdingTime") == null || body.get("sponsor") == null || body.get("userId") == null) {
+                response.put("msc", "fail! " + " 参数缺失，请检查！");
+                response.put("code", "400");
+                return response;
+            } else {
+
+                int gameId = Integer.parseInt(body.get("gameId").toString());
+                String gameName = (String) body.get("gameName");
+                String event = (String) body.get("event");
+                int holdingTime = Integer.parseInt(body.get("holdingTime").toString());
+                String sponsor = (String) body.get("sponsor");
+                int userId = Integer.parseInt(body.get("userId").toString());
+                //int userId = user.getUserId();
+
+                try {
+                    game.setGameId(gameId);
+                    game.setGameName(gameName);
+                    game.setEvent(event);
+                    game.setHoldingTime(holdingTime);
+                    game.setSponsor(sponsor);
+                    game.setUserId(userId);
+
+                    gameMapper.InsertGame(game);
+
+                    response.put("msg", "suc");
+                    response.put("code", 200);
+
+                } catch (Exception e) {
+                    response.put("msg", e);
+                    response.put("code", 400);
+                }
+            }
             return response;
-        }
-        else{
-            int gameId = Integer.parseInt(body.get("gameId").toString());
-            String gameName = (String)body.get("gameName");
-            String event = (String)body.get("event");
-            int holdingTime = Integer.parseInt(body.get("holdingTime").toString());
-            String sponsor = (String)body.get("sponsor");
-            int userId = Integer.parseInt(body.get("userId").toString());
-
-            try{
-                game.setGameId(gameId);
-                game.setGameName(gameName);
-                game.setEvent(event);
-                game.setHoldingTime(holdingTime);
-                game.setSponsor(sponsor);
-                game.setUserId(userId);
-
-                gameMapper.InsertGame(game);
-
-                response.put("msg","suc");
-                response.put("code",200);
-
-            }
-            catch (Exception e){
-                response.put("msg",e);
-                response.put("code",400);
-            }
-        }
-
-        return response;
+//        } catch (NullPointerException e) {
+//            response.put("msg", "请登录");
+//            response.put("code", 400);
+//            return response;
+//        }
     }
 
     @PostMapping("/game/delete")

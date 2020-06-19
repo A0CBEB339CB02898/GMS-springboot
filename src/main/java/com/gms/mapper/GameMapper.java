@@ -10,14 +10,17 @@ import java.util.List;
 
 @Repository
 public interface GameMapper {
-    @Select("select * from Game where IsDeleted=0")
-    List<Game> getAllGame();
+    @Select("select * from Game where IsDeleted=0 limit #{offset},10")
+    List<Game> getAllGame(int offset);
 
     @Select("select * from GamePosition")
     List<GamePosition> getAllGamePosition();
 
     @Select("select * from GameEquipment")
     List<GameEquipment> getAllGameEquipment();
+
+    @Select("select count(*) from Game where IsDeleted=0;")
+    double countUsers();
 
     @Insert("insert into Game(GameId,GameName,Event,HoldingTime,Sponsor,UserId)" +
             "values(#{gameId},#{gameName},#{event},#{holdingTime},#{sponsor},#{userId})")
