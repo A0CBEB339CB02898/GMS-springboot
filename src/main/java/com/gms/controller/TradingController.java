@@ -291,7 +291,12 @@ public class TradingController {
         }
 
         //将混合查询得到的ID数组重新查询为trading数组
-        if (listIdResult.get(0)!=notSearch){
+        if (listIdResult.size()==0){
+            jsonObject.put("page",Math.ceil((double)listResult.size()/pageSize));
+            jsonObject.put("tradingList",listResult);
+            jsonObject.put("msg","无结果");
+            jsonObject.put("code",201);
+        } else if (listIdResult.get(0)!=notSearch){
                 try{
                     for (int i=0;i<listIdResult.size();i++){
                     Trading trading1=new Trading();
@@ -342,15 +347,15 @@ public class TradingController {
         try {
             user = (User) session.getAttribute("user");
             if(isRightUser(Integer.parseInt(body.get("tradingId").toString()),user.getUserId(),user.getPosId())){
-
-                int tradingId= Integer.parseInt(body.get("tradingId").toString());
-                int userId = Integer.parseInt(body.get("userId").toString());
-                int tradingType = Integer.parseInt(body.get("tradingType").toString());
-                String counterParty =(String)body.get("counterParty");
-                int transactionAmount = Integer.parseInt(body.get("transactionAmount").toString());
-                String tradingContent = body.get("tradingContent").toString();
-
                 try{
+                    int tradingId= Integer.parseInt(body.get("tradingId").toString());
+                    int userId = user.getUserId();
+                    int tradingType = Integer.parseInt(body.get("tradingType").toString());
+                    String counterParty =(String)body.get("counterParty");
+                    int transactionAmount = Integer.parseInt(body.get("transactionAmount").toString());
+                    String tradingContent = body.get("tradingContent").toString();
+
+
                     trading.setTradingId(tradingId);
                     trading.setUserId(userId);
                     trading.setTradingType(tradingType);
@@ -361,7 +366,7 @@ public class TradingController {
 
                     jsonObject.put("msg","修改成功");
                     jsonObject.put("code",200);
-                }catch (NullPointerException e){
+                }catch (NullPointerException|NumberFormatException e){
                     jsonObject.put("msg",e);
                     jsonObject.put("code",400);
                     return jsonObject;
