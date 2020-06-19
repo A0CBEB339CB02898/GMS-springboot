@@ -139,7 +139,9 @@ public class TradingController {
     public JSONObject tradingDelete(@RequestBody Map body,HttpSession session){
         JSONObject response = new JSONObject();
         Trading trading = new Trading();
-        User user = (User) session.getAttribute("user");
+        User user = new User();
+        try{
+            user=(User) session.getAttribute("user");
 
         if (isRightUser(Integer.parseInt(body.get("tradingId").toString()),user.getUserId(),user.getPosId())){
             try{
@@ -156,7 +158,12 @@ public class TradingController {
         }
         else {
             response.put("msg","权限不足");
-            response.put("code","400");
+            response.put("code",400);
+        }
+        }catch (NullPointerException e){
+            response.put("msg","请登录");
+            response.put("code",400);
+            return response;
         }
 
         return response;
@@ -174,7 +181,7 @@ public class TradingController {
      * @param count 查询的页数
      * @return json 查询结果
      */
-    @GetMapping("/trading/search")
+//    @GetMapping("/trading/search")
     public JSONObject tradingSearch(int tradingId,int userId,int tradingType,int tradingTimeBegin,int tradingTimeEnd,int count){
 
         JSONObject jsonObject=new JSONObject();
@@ -370,7 +377,63 @@ public class TradingController {
         return jsonObject;
     }
 
+    /**
+     * 封装查询方法
+     */
+    @GetMapping("/trading/search")
+    public JSONObject tradingSearch(String  tradingId,String userId,String tradingType,String tradingTimeBegin,String tradingTimeEnd,String count,HttpSession session){
+        JSONObject jsonObject =new JSONObject();
+        User user =(User) session.getAttribute("user");
+        int  intTradingId=-1;
+        int intUserId=-1;
+        int intTradingType=-1;
+        int intTradingTimeBegin=-1;
+        int intTradingTimeEnd=-1;
+        int intCount=0;
+        try{
+            int i=user.getUserId();
+        }catch (NullPointerException e){
+            jsonObject.put("msg","请登录");
+            jsonObject.put("code",400);
+            return jsonObject;
+        }
+        try{
+            intTradingId=Integer.parseInt(tradingId);
+        }catch (NumberFormatException e){
+            intTradingId=-1;
+        }
+        try{
+            intUserId=Integer.parseInt(userId);
+        }catch (NumberFormatException e){
+            intUserId=-1;
+        }
+        try{
+            intTradingType=Integer.parseInt(tradingType);
+        }catch (NumberFormatException e){
+            intTradingType=-1;
+        }
+        try{
+            intTradingTimeBegin=Integer.parseInt(tradingTimeBegin);
+            System.out.println(intTradingTimeBegin);
+        }catch (NumberFormatException e){
+            intTradingTimeBegin=-1;
+        }
+        try{
+            intTradingTimeEnd=Integer.parseInt(tradingTimeEnd);
+            System.out.println(intTradingTimeEnd);
+        }catch (NumberFormatException e){
+            intTradingTimeEnd=-1;
+        }
 
+        try{
+            intCount=Integer.parseInt(count);
+        }catch (NumberFormatException e){
+            intCount=0;
+        }
+        jsonObject=tradingSearch(intTradingId,intUserId,intTradingType,intTradingTimeBegin,intTradingTimeEnd,intCount);
+
+        return jsonObject;
+    }
 
     //只能改用户、金额、交易方、金额、内容；
     @PostMapping("/trading/change")
