@@ -3,7 +3,7 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**
 !**/src/test/**
-
+src/main/resources/application.properties
 ### STS ###
 .apt_generated
 .classpath
@@ -29,6 +29,3 @@ build/
 
 ### VS Code ###
 .vscode/
-src/main/resources/application.properties
-/src/main/resources/application.properties
-/src/main/resources/application.properties

@@ -13,10 +13,10 @@ public interface GameMapper {
     @Select("select * from Game where IsDeleted=0 limit #{offset},10")
     List<Game> getAllGame(int offset);
 
-    @Select("select * from GamePosition")
+    @Select("select * from GamePosition where IsDeleted=0")
     List<GamePosition> getAllGamePosition();
 
-    @Select("select * from GameEquipment")
+    @Select("select * from GameEquipment where IsDeleted=0")
     List<GameEquipment> getAllGameEquipment();
 
     @Select("select count(*) from Game where IsDeleted=0;")
@@ -31,6 +31,9 @@ public interface GameMapper {
 
     @Select("select * from Game where GameName=#{gameName}")
     List<Game> SearchGameByName(String gameName);
+
+    @Update("update Game set GameName = #{gameName},Event = #{event},HoldingTime = #{holdingTime},Sponsor = #{sponsor} where GameId = #{gameId}")
+    public int editGame(Game game);
 
     @Insert("insert into GameEquipment(EquipmentId,GameId,EquipmentName)"+
             "values(#{equipmentId},#{gameId},#{equipmentName})")

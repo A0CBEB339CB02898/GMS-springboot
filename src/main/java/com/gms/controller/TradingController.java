@@ -5,6 +5,7 @@ import com.gms.entity.Trading;
 import com.gms.entity.User;
 import com.gms.mapper.TradingMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -586,14 +587,67 @@ public class TradingController {
     /*
       鉴权结束
      */
+//扫码支付
+    @GetMapping("/trading/qrcode")
+    public JSONObject qrCodeVerification(String paymentUid,int step) {
+        JSONObject jsonObject =new JSONObject();
+        String baseLink="http://api.gms.atiantts.xyz";
+        if (step==1){
+            String Uid = DigestUtils.md5DigestAsHex((Long.toString((666+System.currentTimeMillis())/ 1000)).getBytes());
+            try{
+                tradingMapper.insertPayment(Uid,false);
+                jsonObject.put("payLink",baseLink+"/trading/mobile?paymentUid="+Uid+"&step=2");
+                jsonObject.put("msg","支付单号已生成");
+                jsonObject.put("code",200);
+            }catch (NullPointerException e){
+                jsonObject.put("msg","支付生成失败");
+                jsonObject.put("code",500);
+            }
+            return jsonObject;
+        }
+        if (step==2){
+            try{
+                tradingMapper.pay(paymentUid);
+                jsonObject.put("code",200);
+                jsonObject.put("msg","支付成功");
+                return jsonObject;
+            }catch (NullPointerException e){
+                jsonObject.put("code",400);
+                jsonObject.put("msg","支付失败");
+            }
+        }
+        if (step==3){
+            try{
+                boolean isPay=tradingMapper.getIsPay(paymentUid);
+                if (isPay){
+                    jsonObject.put("msg","支付成功！");
+                    jsonObject.put("code",200);
+                }else {
+                    jsonObject.put("msg","您还未扫码支付！");
+                    jsonObject.put("code",400);
+                }
+            }catch (NullPointerException e){
+                jsonObject.put("msg","失败！");
+                jsonObject.put("code",400);
+                return jsonObject;
+            }
+        }
+        return jsonObject;
+    }
 
-//    @GetMapping("/trading/qrcode")
-//    public String qrCodeVerification(String identifyingCode,String isPay,int step) {
-//        if (step==1){
-//
-//        }
-//    }
-
+    @GetMapping("/trading/mobile")
+    public String showInMobile(String paymentUid,int step){
+        if (step==2){
+            JSONObject jsonObject=new JSONObject();
+            jsonObject=qrCodeVerification(paymentUid,step);
+            if ((int)jsonObject.get("code")==200){
+                return "支付成功";
+            }else {
+                return "支付失败";
+            }
+        }
+        return "错误";
+    }
     //查询空返回
     private JSONObject searchNull(){
         JSONObject jsonObject =new JSONObject();

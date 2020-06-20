@@ -1,5 +1,6 @@
 package com.gms.mapper;
 
+import com.alibaba.fastjson.JSONObject;
 import com.gms.entity.Trading;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
@@ -63,6 +64,15 @@ public interface TradingMapper {
     public int changeTrading(Trading trading);
 
 
+    //增加支付账单
+    @Insert("insert into Payment(paymentUid,isPay) values(#{paymentUid},#{isPay})")
+    public int insertPayment(String paymentUid,Boolean isPay);
+    //查支付账单
+    @Select("select isPay from Payment where paymentUid=#{paymentUid}")
+    Boolean getIsPay(String paymentUid);
+    //支付
+    @Update("update Payment set isPay=1 where paymentUid=#{paymentUid}")
+    public int pay(String paymentUid);
 //    @Update("update Employee set Name=#{Name} where FileID=#{id}")
 //    public int updateTrading(Trading trading);
 }
