@@ -1,16 +1,16 @@
 package com.gms.entity;
 
 public class GameEquipment {
-    private int equipmentId;
+    private String equipmentId;
     private int gameId;
     private String equipmentName;
 
 
-    public int getEquipmentId() {
+    public String getEquipmentId() {
         return equipmentId;
     }
 
-    public void setEquipmentId(int equipmentId) {
+    public void setEquipmentId(String equipmentId) {
         this.equipmentId = equipmentId;
     }
 

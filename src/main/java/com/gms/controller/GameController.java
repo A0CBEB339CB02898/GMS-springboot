@@ -71,7 +71,7 @@ public class GameController {
         Game game = new Game();
         //User user = new User();
 
-       // try {
+        //try {
             //user = (User) session.getAttribute("user");
             if (body.get("gameId") == null || body.get("gameName") == null || body.get("event") == null ||
                 body.get("holdingTime") == null || body.get("sponsor") == null || body.get("userId") == null) {
@@ -146,6 +146,46 @@ public class GameController {
         return response;
     }
 
+    @PostMapping("/game/edit")
+    public JSONObject equipmentChange(@RequestBody Map body){
+        JSONObject response = new JSONObject();
+        Game game = new Game();
+
+        if(body.get("gameName")==null || body.get("event")==null || body.get("holdingTime")==null || body.get("sponsor")==null){
+            response.put("msc","fail! "+" 参数缺失，请检查！");
+            response.put("code",404);
+            return response;
+        }
+        else{
+            String gameName = (String)body.get("gameName");
+            String event = (String)body.get("event");
+            int holdingTime = Integer.parseInt(body.get("holdingTime").toString());
+            String sponsor = (String)body.get("sponsor");
+            int gameId = Integer.parseInt(body.get("gameId").toString());
+
+            try{
+                game.setGameId(gameId);
+                game.setGameName(gameName);
+                game.setEvent(event);
+                game.setHoldingTime(holdingTime);
+                game.setSponsor(sponsor);
+
+                gameMapper.editGame(game);
+
+                response.put("msg","suc");
+                response.put("code",200);
+
+            }
+            catch (Exception e){
+                response.put("msg",e);
+                response.put("code",400);
+            }
+        }
+
+        return response;
+    }
+
+
     @GetMapping("/game/search")
     public JSONObject GameSearchByName(@RequestBody Map body){
         JSONObject response = new JSONObject();
@@ -176,7 +216,7 @@ public class GameController {
             return response;
         }
         else{
-            int equipmentId = Integer.parseInt(body.get("equipmentId").toString());
+            String equipmentId = (String)body.get("equipmentId");
             int gameId = Integer.parseInt(body.get("gameId").toString());
             String equipmentName = (String)body.get("equipmentName");
 
