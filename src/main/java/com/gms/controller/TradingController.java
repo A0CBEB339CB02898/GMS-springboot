@@ -5,8 +5,10 @@ import com.gms.entity.Trading;
 import com.gms.entity.User;
 import com.gms.mapper.TradingMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
@@ -596,7 +598,7 @@ public class TradingController {
             String Uid = DigestUtils.md5DigestAsHex((Long.toString((666+System.currentTimeMillis())/ 1000)).getBytes());
             try{
                 tradingMapper.insertPayment(Uid,false);
-                jsonObject.put("paymentUid",paymentUid);
+                jsonObject.put("paymentUid",Uid);
                 jsonObject.put("payLink",baseLink+"/trading/mobile?paymentUid="+Uid+"&step=2");
                 jsonObject.put("msg","支付单号已生成");
                 jsonObject.put("code",200);
@@ -637,17 +639,17 @@ public class TradingController {
     }
 
     @GetMapping("/trading/mobile")
-    public String showInMobile(String paymentUid,int step){
+    public ModelAndView showInMobile(String paymentUid,int step){
         if (step==2){
             JSONObject jsonObject=new JSONObject();
             jsonObject=qrCodeVerification(paymentUid,step);
             if ((int)jsonObject.get("code")==200){
-                return "支付成功";
+                return new ModelAndView("/paySuccess.html");
             }else {
-                return "支付失败";
+                return new ModelAndView("/payFail.html");
             }
         }
-        return "错误";
+        return new ModelAndView("/payFail.html");
     }
     //查询空返回
     private JSONObject searchNull(){
