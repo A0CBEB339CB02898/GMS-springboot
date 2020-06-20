@@ -243,7 +243,7 @@ public class PlaceController {
         String light = (String) body.get("light");
         String placeName= (String) body.get("placeName");
 
-    try{
+
         appointment.setIdAppointment(idAppointment);
         appointment.setLocation(location);
         appointment.setPlaceName(placeName);
@@ -256,10 +256,9 @@ public class PlaceController {
 
         response.put("msg","suc");
         response.put("code",200);
-    }catch (Exception e){
-        response.put("msg",e);
-        response.put("code",400);
-    }
+
+
+
     return response;
    }
 }

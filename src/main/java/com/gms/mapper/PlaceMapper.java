@@ -43,7 +43,7 @@ public interface PlaceMapper {
 
 
 
-    @Insert("insert into Appointment(idPlace,startAppointment,overAppointment,userId,purpose,idCharge) select #{idPlace},#{startAppointment},#{overAppointment},#{userId},#{purpose},(select  coalesce((SELECT IFNULL(idCharge,54) from Charge where week=#{week} and startCharge=#{startAppointment} and light=#{light} and placeName=#{placeName}),54)AS idCharge)")
+    @Insert("insert into Appointment(idPlace,week,startAppointment,overAppointment,userId,purpose,idCharge) select #{idPlace},#{week},#{startAppointment},#{overAppointment},#{userId},#{purpose},(select  coalesce((SELECT IFNULL(idCharge,54) from Charge where week=#{week} and startCharge=#{startAppointment} and light=#{light} and placeName=#{placeName}),54)AS idCharge)")
     int insertAppointment(Appointment appointmentAdd);
 
     //按照用户名查询
