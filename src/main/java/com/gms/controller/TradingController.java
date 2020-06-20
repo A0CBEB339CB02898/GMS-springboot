@@ -587,6 +587,12 @@ public class TradingController {
       鉴权结束
      */
 
+//    @GetMapping("/trading/qrcode")
+//    public String qrCodeVerification(String identifyingCode,String isPay,int step) {
+//        if (step==1){
+//
+//        }
+//    }
 
     //查询空返回
     private JSONObject searchNull(){
