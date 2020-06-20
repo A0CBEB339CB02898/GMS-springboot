@@ -10,13 +10,33 @@ public class Appointment {
     private int startAppointment;
     private int  overAppointment;
     private int userId;
-    private String purpose;
+    private int cost;
+    private int idDelete;
     private int idCharge;
+
     private String placeName;
     private String location;
     private String userName;
-    private int cost;
-    private int idDelete;
+    private String light;
+    private String purpose;
+    private String week;
+
+
+    public String getWeek() {
+        return week;
+    }
+
+    public void setWeek(String week) {
+        this.week = week;
+    }
+
+    public String getLight() {
+        return light;
+    }
+
+    public void setLight(String light) {
+        this.light = light;
+    }
 
     public int getIdDelete() {
         return idDelete;
