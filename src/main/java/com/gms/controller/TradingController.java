@@ -591,7 +591,7 @@ public class TradingController {
     @GetMapping("/trading/qrcode")
     public JSONObject qrCodeVerification(String paymentUid,int step) {
         JSONObject jsonObject =new JSONObject();
-        String baseLink="localhost:8080";
+        String baseLink="http://api.gms.atiantts.xyz";
         if (step==1){
             String Uid = DigestUtils.md5DigestAsHex((Long.toString((666+System.currentTimeMillis())/ 1000)).getBytes());
             try{
