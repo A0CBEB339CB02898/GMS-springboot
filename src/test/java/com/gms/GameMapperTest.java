@@ -22,12 +22,12 @@ public class GameMapperTest {
     private List<GameEquipment> gameEquipments;
 
 
-    @Test
-    public void getAllGame() throws  Exception{
-        games = gameMapper.getAllGame();
-        System.out.println(games.get(1).getGameId());
-        System.out.println(games.get(1).getGameName());
-    }
+//    @Test
+//    public void getAllGame() throws  Exception{
+//        games = gameMapper.getAllGame();
+//        System.out.println(games.get(1).getGameId());
+//        System.out.println(games.get(1).getGameName());
+//    }
 
     @Test
     public void getAllGamePosition() throws  Exception{
