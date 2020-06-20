@@ -596,6 +596,7 @@ public class TradingController {
             String Uid = DigestUtils.md5DigestAsHex((Long.toString((666+System.currentTimeMillis())/ 1000)).getBytes());
             try{
                 tradingMapper.insertPayment(Uid,false);
+                jsonObject.put("paymentUid",paymentUid);
                 jsonObject.put("payLink",baseLink+"/trading/mobile?paymentUid="+Uid+"&step=2");
                 jsonObject.put("msg","支付单号已生成");
                 jsonObject.put("code",200);
