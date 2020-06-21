@@ -4,12 +4,15 @@ import com.alibaba.fastjson.JSONObject;
 import com.gms.entity.User;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -128,6 +131,35 @@ public class UserController {
             object.put("code", 200);
         }else {
             object.put("message", "删除失败");
+            object.put("code", 404);
+        }
+        return object;
+    }
+
+    @PostMapping("/changeAvatar")
+    public JSONObject changeAvatar(@RequestBody Map user, HttpServletRequest request){
+        JSONObject object = new JSONObject();
+        HttpSession session = request.getSession();
+        int userId = Integer.parseInt(String.valueOf(user.get("userId")));
+        String avatar = user.get("avatar").toString();
+        User curUser = (User) session.getAttribute("user");
+        System.out.println(curUser.getAvatar());
+
+        int line = 0;
+        try {
+            line = userMapper.changeAvatar(avatar, userId);
+            System.out.println(line);
+            if (line>=1){
+                curUser.setAvatar(avatar);
+                session.setAttribute("user", curUser);
+                object.put("message", "更新成功");
+                object.put("code", 200);
+            }else {
+                object.put("message", "修改失败");
+                object.put("code", 404);
+            }
+        } catch (Exception e){
+            object.put("message", "修改失败");
             object.put("code", 404);
         }
         return object;

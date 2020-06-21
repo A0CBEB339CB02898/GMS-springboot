@@ -9,6 +9,7 @@ public class User {
     private String email;
     private int posId;
     private int state;
+    private String avatar;
 
     public int getUserId() {
         return userId;
@@ -48,6 +49,14 @@ public class User {
 
     public void setPosId(int posId) {
         this.posId = posId;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     public int getState() {

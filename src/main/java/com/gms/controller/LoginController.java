@@ -29,9 +29,6 @@ public class LoginController {
         Object code = user.get("code");
         HttpSession session = request.getSession();
         Object ValidateCode = session.getAttribute("ValidateCode");
-        System.out.println(code);
-        System.out.println(ValidateCode);
-        System.out.println(code.equals(ValidateCode));
         userList = userMapper.login(user.get("username").toString(), md5Pass);
         System.out.println(user.get("username").toString()+"====="+md5Pass);
         JSONObject object = new JSONObject();
@@ -86,7 +83,7 @@ public class LoginController {
 
     @PostMapping("/changePassword")
     public JSONObject changePassword(@RequestBody Map user,HttpServletRequest request){
-        System.out.println(user.get("username"));
+        System.out.println(user.get("password").toString());
         JSONObject object = new JSONObject();
         String md5Pass = DigestUtils.md5DigestAsHex(user.get("password").toString().getBytes());
         Object code = user.get("code");
