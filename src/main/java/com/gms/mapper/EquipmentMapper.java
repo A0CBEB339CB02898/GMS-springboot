@@ -13,6 +13,22 @@ public interface EquipmentMapper {
     @Select("select * from Equipment")
     List<Equipment> getAllEquipment();
 
+    @Select("select * from Equipment " +
+            "where equipmentId = #{equipmentId}")
+    List<Equipment> getAllEquipmentById(Equipment equipment);
+
+    @Select("select * from Equipment " +
+            "where equipmentName = #{equipmentName}")
+    List<Equipment> getAllEquipmentByName(Equipment equipment);
+
+    @Select("select * from Equipment " +
+            "where equipmentStatus = #{equipmentStatus}")
+    List<Equipment> getAllEquipmentByStatus(Equipment equipment);
+
+    @Select("select * from Equipment " +
+            "where equipmentRenterId = #{equipmentRenterId}")
+    List<Equipment> getAllEquipmentByRenterId(Equipment equipment);
+
     @Insert("insert into Equipment(equipmentId,equipmentName,equipmentCost,equipmentStatus)" +
             "values(#{equipmentId},#{equipmentName},#{equipmentCost},#{equipmentStatus})")
     public int insertEquipment(Equipment equipment);
