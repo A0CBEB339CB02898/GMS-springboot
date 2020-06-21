@@ -60,6 +60,9 @@ public interface UserMapper {
     @Select("select userId from GMSdb.User where email=#{email} and posId=2")
     List<Integer> queryManagerByEmail(String email);
 
+    @Update("update GMSdb.User set avatar=#{avatar} where userId=#{userId}")
+    int changeAvatar(String avatar, int userId);
+
     @Select("select * from Routes where posId=#{posId}")
     List<Route> getRoutes(int posId);
 

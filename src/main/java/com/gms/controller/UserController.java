@@ -133,6 +133,30 @@ public class UserController {
         return object;
     }
 
+    @PostMapping("/changeAvatar")
+    public JSONObject changeAvatar(@RequestBody Map user){
+        JSONObject object = new JSONObject();
+        int userId = Integer.parseInt(String.valueOf(user.get("userId")));
+        String avatar = user.get("avatar").toString();
+        System.out.println(userId);
+        System.out.println(avatar);
+        int line = 0;
+        try {
+            line = userMapper.changeAvatar(avatar, userId);
+            if (line>=1){
+                object.put("message", "更新成功");
+                object.put("code", 200);
+            }else {
+                object.put("message", "修改失败");
+                object.put("code", 404);
+            }
+        } catch (Exception e){
+            object.put("message", "修改失败");
+            object.put("code", 404);
+        }
+        return object;
+    }
+
     /**
      * 动态查询 value=-1即不查询
      * @param userId
