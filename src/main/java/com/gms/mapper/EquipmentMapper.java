@@ -29,6 +29,10 @@ public interface EquipmentMapper {
             "where equipmentRenterId = #{equipmentRenterId}")
     List<Equipment> getAllEquipmentByRenterId(Equipment equipment);
 
+    @Select("select * from Equipment " +
+            "where gameId != 'null'")
+    List<Equipment> getAllEquipmentByGameId(Equipment equipment);
+
     @Insert("insert into Equipment(equipmentId,equipmentName,equipmentCost,equipmentStatus)" +
             "values(#{equipmentId},#{equipmentName},#{equipmentCost},#{equipmentStatus})")
     public int insertEquipment(Equipment equipment);

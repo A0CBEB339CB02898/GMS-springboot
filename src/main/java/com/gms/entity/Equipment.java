@@ -8,6 +8,15 @@ public class Equipment {
     private String equipmentStatus;
     private long equipmentTime;
     private int equipmentRenterId;
+    private int gameId;
+
+    public int getGameId() {
+        return gameId;
+    }
+
+    public void setGameId(int gameId) {
+        this.gameId = gameId;
+    }
 
     public String getEquipmentId() {
         return equipmentId;

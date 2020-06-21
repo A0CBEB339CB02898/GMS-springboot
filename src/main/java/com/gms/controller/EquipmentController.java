@@ -311,4 +311,28 @@ public class EquipmentController {
 
         return response;
     }
+
+    @PostMapping("/equipment/searchGameId")
+    public JSONObject equipmentSearchGameId(@RequestBody Map body) {
+        JSONObject response = new JSONObject();
+        Equipment equipment = new Equipment();
+        List<Equipment> equipmentList = new ArrayList<>();
+
+            try {
+                equipmentList = equipmentMapper.getAllEquipmentByGameId(equipment);
+
+                response.put("msg", "suc");
+                response.put("code", 200);
+
+            } catch (Exception e) {
+                response.put("msg", e);
+                response.put("code", 400);
+            }
+            response.put("equipments", equipmentList);
+
+
+        return response;
+
+
+    }
 }
