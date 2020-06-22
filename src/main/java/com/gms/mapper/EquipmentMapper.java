@@ -68,11 +68,11 @@ public interface EquipmentMapper {
     @Delete("delete from Equipment where equipmentId = #{equipmentId}")
     public int deleteEquipment(Equipment equipment);
 
-    @Update("update Equipment set equipmentStatus = 'rent',equipmentRenterId = #{equipmentRenterId},equipmentTime = #{equipmentTime} " +
+    @Update("update Equipment set equipmentStatus = 'rent',equipmentRenterId = #{equipmentRenterId},equipmentTime = #{equipmentTime}, gameId = #{gameId} " +
             "where equipmentId = #{equipmentId}")
     public int rentEquipment(Equipment equipment);
 
-    @Update("update Equipment set equipmentStatus = 'free',equipmentRenterId = null,equipmentTime = null " +
+    @Update("update Equipment set equipmentStatus = 'free',equipmentRenterId = null,equipmentTime = null ,gameId = null " +
             "where equipmentId = #{equipmentId}")
     public int recycleEquipment(Equipment equipment);
 

@@ -228,11 +228,13 @@ public class EquipmentController {
             String equipmentId = (String) body.get("equipmentId");
             int equipmentRenterId = Integer.parseInt(body.get("equipmentRenterId").toString());
             long equipmentTime = System.currentTimeMillis();
+            int gameId = Integer.parseInt(body.get("gameId").toString());
 
             try {
                 equipment.setEquipmentId(equipmentId);
                 equipment.setEquipmentRenterId(equipmentRenterId);
                 equipment.setEquipmentTime(equipmentTime);
+                equipment.setGameId(gameId);
 
                 equipmentMapper.rentEquipment(equipment);
 
