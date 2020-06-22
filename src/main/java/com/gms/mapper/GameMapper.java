@@ -30,13 +30,12 @@ public interface GameMapper {
     public int DeleteGame(Game game);
 
     @Select("select * from Game where GameName=#{gameName}")
-    List<Game> SearchGameByName(String gameName);
+    List<Game> SearchGameByName(Game game);
 
     @Update("update Game set GameName = #{gameName},Event = #{event},HoldingTime = #{holdingTime},Sponsor = #{sponsor} where GameId = #{gameId}")
     public int editGame(Game game);
 
-    @Insert("insert into GameEquipment(EquipmentId,GameId,EquipmentName)"+
-            "values(#{equipmentId},#{gameId},#{equipmentName})")
+    @Insert("insert into GameEquipment(EquipmentId,GameId,EquipmentName) values(#{equipmentId},#{gameId},#{equipmentName})")
     public int InsertGameEquipment(GameEquipment gameEquipment);
 
     @Insert("insert into GamePosition(BookId,GameId,PositionName)" +

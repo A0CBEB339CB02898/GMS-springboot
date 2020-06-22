@@ -83,7 +83,8 @@ public class GameController {
                 int gameId = Integer.parseInt(body.get("gameId").toString());
                 String gameName = (String) body.get("gameName");
                 String event = (String) body.get("event");
-                int holdingTime = Integer.parseInt(body.get("holdingTime").toString());
+                //int holdingTime = Integer.parseInt(body.get("holdingTime").toString());
+                String holdingTime = (String) body.get("holdingTime");
                 String sponsor = (String) body.get("sponsor");
                 int userId = Integer.parseInt(body.get("userId").toString());
                 //int userId = user.getUserId();
@@ -159,7 +160,8 @@ public class GameController {
         else{
             String gameName = (String)body.get("gameName");
             String event = (String)body.get("event");
-            int holdingTime = Integer.parseInt(body.get("holdingTime").toString());
+            //int holdingTime = Integer.parseInt(body.get("holdingTime").toString());
+            String holdingTime = (String)body.get("holdingTime");
             String sponsor = (String)body.get("sponsor");
             int gameId = Integer.parseInt(body.get("gameId").toString());
 
@@ -191,7 +193,10 @@ public class GameController {
         JSONObject response = new JSONObject();
        // System.out.println("gameName:"+gameName);
         List<Game> games;
-        games = gameMapper.SearchGameByName(body.get("gameName").toString());
+        Game game = new Game();
+        String gameName = (String) body.get("gameName");
+        game.setGameName(gameName);
+        games = gameMapper.SearchGameByName(game);
         //games = gameMapper.SearchGameByName();
         System.out.println("games:"+games);
         if(games.size()!=0){
@@ -199,11 +204,12 @@ public class GameController {
             response.put("code", 200);
         } else {
             response.put("message", "未找到结果");
-            response.put("code", 404);
+           response.put("code", 404);
         }
         response.put("games",games);
         return response;
-    }
+
+        }
 
     @PostMapping("/game/addEquipment")
     public JSONObject GameEquipmentAdd(@RequestBody Map body){

@@ -6,7 +6,7 @@ public class Game {
     private int gameId;
     private String gameName;
     private String Event;
-    private double holdingTime;
+    private String holdingTime;
     private String sponsor;
     private int userId;
 
@@ -42,11 +42,11 @@ public class Game {
         Event = event;
     }
 
-    public double getHoldingTime() {
+    public String getHoldingTime() {
         return holdingTime;
     }
 
-    public void setHoldingTime(int holdingTime) {
+    public void setHoldingTime(String holdingTime) {
         this.holdingTime = holdingTime;
     }
 
