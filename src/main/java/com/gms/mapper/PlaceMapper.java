@@ -36,19 +36,17 @@ public interface PlaceMapper {
     int changePlace(Place placeChange);
 
     //查找预约
-    @Select("SELECT  Place.placeName,Place.location, Appointment.startAppointment,Appointment.overAppointment,Appointment.purpose,  User.username,Charge.cost \n" +
-            "FROM GMSdb.Place,GMSdb.Appointment,GMSdb.User,GMSdb.Charge \n" +
-            "WHERE Appointment.idPlace = Place.idPlace and Appointment.userId= User.userId and Appointment.idCharge=Charge.idCharge and Appointment.isDelete='0';")
+    @Select("select Appointment.idAppointment,Place.placeName,Place.location,Appointment.week,Appointment.startAppointment,Appointment.overAppointment,Appointment.purpose, User.username,Charge.cost  FROM GMSdb.Place,GMSdb.Appointment,GMSdb.User,GMSdb.Charge  WHERE Appointment.isDelete=0 and Appointment.idPlace = Place.idPlace and Appointment.idCharge=Charge.idCharge and Appointment.userId = User.userId ")
     List<Appointment> getAppointment();
-
-
-
-    @Insert("insert into Appointment(idPlace,week,startAppointment,overAppointment,userId,purpose,idCharge) select #{idPlace},#{week},#{startAppointment},#{overAppointment},#{userId},#{purpose},(select  coalesce((SELECT IFNULL(idCharge,54) from Charge where week=#{week} and startCharge=#{startAppointment} and light=#{light} and placeName=#{placeName}),54)AS idCharge)")
-    int insertAppointment(Appointment appointmentAdd);
 
     //按照用户名查询
     @Select("select Appointment.idAppointment,Place.placeName,Place.location,Appointment.week,Appointment.startAppointment,Appointment.overAppointment,Appointment.purpose, User.username,Charge.cost  FROM GMSdb.Place,GMSdb.Appointment,GMSdb.User,GMSdb.Charge  WHERE Appointment.isDelete=0 and Appointment.idPlace = Place.idPlace and Appointment.idCharge=Charge.idCharge and Appointment.userId=#{userId} and Appointment.userId = User.userId ")
     List<Appointment> getUserAppointment(int userId);
+  //添加预约
+    @Insert("insert into Appointment(idPlace,week,startAppointment,overAppointment,userId,purpose,idCharge) select #{idPlace},#{week},#{startAppointment},#{overAppointment},#{userId},#{purpose},(select  coalesce((SELECT IFNULL(idCharge,54) from Charge where week=#{week} and startCharge=#{startAppointment} and light=#{light} and placeName=#{placeName}),54)AS idCharge)")
+    int insertAppointment(Appointment appointmentAdd);
+
+
 
     //预约退订
      @Update("update Appointment set isDelete= '1' where idAppointment=#{idAppointment}")
