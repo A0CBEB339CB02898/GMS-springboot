@@ -189,14 +189,15 @@ public class GameController {
 
 
     @GetMapping("/game/search")
-    public JSONObject GameSearchByName(@RequestBody Map body){
+    public JSONObject GameSearchByName(String gameName){
         JSONObject response = new JSONObject();
        // System.out.println("gameName:"+gameName);
         List<Game> games;
         Game game = new Game();
-        String gameName = (String) body.get("gameName");
+//        String gameName = (String) body.get("gameName");
         game.setGameName(gameName);
         games = gameMapper.SearchGameByName(game);
+        System.out.println(gameName);
         //games = gameMapper.SearchGameByName();
         System.out.println("games:"+games);
         if(games.size()!=0){
