@@ -140,7 +140,7 @@ public class PlaceController {
             object.put("msg","请求失败");
             object.put("code","404");
         }
-        object.put("appointment",appointmentList);
+        object.put("allAppointment",appointmentList);
 
         return object;
 

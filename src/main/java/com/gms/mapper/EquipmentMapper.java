@@ -30,7 +30,7 @@ public interface EquipmentMapper {
     List<Equipment> getAllEquipmentByRenterId(Equipment equipment);
 
     @Select("select * from Equipment " +
-            "where gameId != 'null'")
+            "where gameId != 'null' and gameId != 0")
     List<Equipment> getAllEquipmentByGameId(Equipment equipment);
 
     @Insert("insert into Equipment(equipmentId,equipmentName,equipmentCost,equipmentStatus)" +
