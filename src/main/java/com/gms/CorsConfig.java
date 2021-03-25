@@ -13,11 +13,11 @@ import org.springframework.web.filter.CorsFilter;
 public class CorsConfig {
     private CorsConfiguration buildConfig() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
+        //最终的结果是可以 在跨域请求的时候获取同一个 session
+        corsConfiguration.setAllowCredentials(true);
         corsConfiguration.addAllowedOrigin("*"); // 1
         corsConfiguration.addAllowedHeader("*"); // 2
         corsConfiguration.addAllowedMethod("*"); // 3
-        //最终的结果是可以 在跨域请求的时候获取同一个 session
-        corsConfiguration.setAllowCredentials(true);
         return corsConfiguration;
     }
 

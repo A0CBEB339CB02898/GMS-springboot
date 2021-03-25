@@ -136,7 +136,7 @@ public class LoginController {
             // validateCode.getRandomCode(request, response);
 
             // 返回base64
-            String base64String = validateCode.getRandomCodeBase64(request, response);
+            String base64String = validateCode.getRandomCodeBase64(request);
             result.put("url", "data:image/png;base64," + base64String);
             result.put("message", "created successfull");
 

@@ -1,6 +1,6 @@
 package com.gms.utils;
 
-import org.apache.commons.io.FileUtils;
+//import org.apache.commons.io.FileUtils;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
@@ -121,7 +121,7 @@ public class ValidateCode {
         }
     }
 
-    public String getRandomCodeBase64(HttpServletRequest request, HttpServletResponse response) {
+    public String getRandomCodeBase64(HttpServletRequest request) {
         HttpSession session = request.getSession();
         // BufferedImage类是具有缓冲区的Image类,Image类是用于描述图像信息的类
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_BGR);
